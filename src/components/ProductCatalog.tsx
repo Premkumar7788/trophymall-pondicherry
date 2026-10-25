@@ -13,7 +13,7 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { Product } from '@/types';
-import { CATEGORIES, STORE_INFO } from '@/data/catalog';
+import { CATEGORIES, STORE_INFO, PRODUCTS } from '@/data/catalog';
 import { getStoredProducts } from '@/lib/catalogStore';
 import CategoryTabs from './CategoryTabs';
 import ProductCard from './ProductCard';
@@ -23,22 +23,33 @@ interface ProductCatalogProps {
 }
 
 export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
-  const [catalogProducts, setCatalogProducts] = useState<Product[]>([]);
+  // Initialize with default PRODUCTS so customers never see an empty screen
+  const [catalogProducts, setCatalogProducts] = useState<Product[]>(PRODUCTS);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc'>('featured');
 
-  // Load products dynamically on mount and listen to updates
+  // Load custom stored products on mount and listen to real-time updates
   useEffect(() => {
-    setCatalogProducts(getStoredProducts());
+    const loaded = getStoredProducts();
+    if (loaded && loaded.length > 0) {
+      setCatalogProducts(loaded);
+    }
 
     const handleCatalogUpdate = () => {
-      setCatalogProducts(getStoredProducts());
+      const updated = getStoredProducts();
+      if (updated && updated.length > 0) {
+        setCatalogProducts(updated);
+      }
     };
 
     window.addEventListener('catalog-updated', handleCatalogUpdate);
-    return () => window.removeEventListener('catalog-updated', handleCatalogUpdate);
+    window.addEventListener('storage', handleCatalogUpdate);
+    return () => {
+      window.removeEventListener('catalog-updated', handleCatalogUpdate);
+      window.removeEventListener('storage', handleCatalogUpdate);
+    };
   }, []);
 
   // Product counts per category

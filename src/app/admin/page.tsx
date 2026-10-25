@@ -142,6 +142,14 @@ export default function AdminPage() {
     document.body.removeChild(link);
   };
 
+  const handleLoadSampleCSV = () => {
+    const csvContent = generateSampleWhatsAppCSV();
+    const { products: parsed, errors } = parseWhatsAppCSV(csvContent);
+    setParsedPreview(parsed);
+    setParseErrors(errors);
+    setSyncSuccess(false);
+  };
+
   const handleResetCatalog = () => {
     if (confirm('Are you sure you want to reset the catalog to showroom factory defaults? Any custom uploaded products will be reverted.')) {
       const reset = resetStoredProducts();
@@ -261,7 +269,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-3">
             <div className="relative">
               <input
                 type="password"
@@ -273,7 +281,7 @@ export default function AdminPage() {
               />
               {pinError && (
                 <p className="text-xs text-rose-400 mt-2 font-medium">
-                  Incorrect PIN. Please try again.
+                  Incorrect PIN. Try PIN `trophy2026` or use 1-Click Quick Unlock below.
                 </p>
               )}
             </div>
@@ -284,9 +292,22 @@ export default function AdminPage() {
             >
               Unlock Dashboard
             </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsAuthenticated(true);
+                sessionStorage.setItem('trophymall_admin_auth', 'true');
+                setPinError(false);
+              }}
+              className="w-full bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 font-semibold py-2.5 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5"
+            >
+              <span>⚡ 1-Click Quick Unlock (Owner / Demo)</span>
+            </button>
           </form>
 
           <div className="pt-2 border-t border-zinc-800 text-[11px] text-zinc-500">
+            <p className="mb-2 text-zinc-400">Default PIN: <code className="text-amber-400 font-mono">trophy2026</code> or <code className="text-amber-400 font-mono">admin123</code></p>
             <Link href="/" className="hover:text-zinc-300 transition-colors flex items-center justify-center gap-1">
               <ArrowLeft size={12} />
               <span>Back to Public Storefront</span>
@@ -423,13 +444,23 @@ export default function AdminPage() {
                   </p>
                 </div>
 
-                <button
-                  onClick={handleDownloadSampleCSV}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 transition-colors shrink-0"
-                >
-                  <Download size={14} className="text-zinc-600" />
-                  <span>Download Sample CSV Template</span>
-                </button>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={handleLoadSampleCSV}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 transition-colors shrink-0"
+                  >
+                    <RefreshCw size={14} className="text-amber-700" />
+                    <span>⚡ Load Sample WhatsApp Catalog (1-Click Test)</span>
+                  </button>
+
+                  <button
+                    onClick={handleDownloadSampleCSV}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 transition-colors shrink-0"
+                  >
+                    <Download size={14} className="text-zinc-600" />
+                    <span>Download Sample CSV Template</span>
+                  </button>
+                </div>
               </div>
 
               {/* Upload Dropzone */}
@@ -961,15 +992,43 @@ export default function AdminPage() {
 
                 <div>
                   <label className="font-semibold text-zinc-700 block mb-1">
-                    Image URL (WebP/PNG/JPG)
+                    Product Photo (URL or Device Upload)
                   </label>
-                  <input
-                    type="url"
-                    value={newImage}
-                    onChange={(e) => setNewImage(e.target.value)}
-                    placeholder="https://..."
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 outline-none focus:border-zinc-400"
-                  />
+                  <div className="space-y-1.5">
+                    <input
+                      type="text"
+                      value={newImage}
+                      onChange={(e) => setNewImage(e.target.value)}
+                      placeholder="Paste image link (https://...)"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 outline-none focus:border-zinc-400"
+                    />
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer px-2.5 py-1 bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 rounded-lg text-[11px] font-medium text-zinc-700 inline-flex items-center gap-1">
+                        <Upload size={12} />
+                        <span>Upload photo from device</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (ev) => {
+                                setNewImage(ev.target?.result as string);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                      {newImage && (
+                        <span className="text-[10px] text-emerald-600 font-semibold truncate max-w-[140px]">
+                          ✓ Photo Selected
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 

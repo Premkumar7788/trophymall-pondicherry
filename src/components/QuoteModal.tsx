@@ -30,10 +30,15 @@ export default function QuoteModal({
   const [contactPerson, setContactPerson] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [eventDate, setEventDate] = useState('');
+  const [quoteRef, setQuoteRef] = useState('TMP-849201');
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setQuoteRef(`TMP-${Math.floor(100000 + Math.random() * 900000)}`);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
-
-  const quoteRef = `TMP-${Math.floor(100000 + Math.random() * 900000)}`;
   const currentDate = new Date().toLocaleDateString('en-IN', {
     day: 'numeric',
     month: 'short',

@@ -8,6 +8,7 @@ import {
   Clock 
 } from 'lucide-react';
 import { submitOrderInquiry } from '@/lib/supabase';
+import { recordCustomerInquiry } from '@/lib/catalogStore';
 import { STORE_INFO } from '@/data/catalog';
 
 export default function InstitutionalTenderForm() {
@@ -22,30 +23,40 @@ export default function InstitutionalTenderForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      await submitOrderInquiry({
-        customerName: contactName,
-        customerPhone: phone,
-        customerEmail: email,
-        organizationName: orgName,
-        quantity: parseInt(estQty) || 50,
-        engravingLine1: `${category} (Est Qty: ${estQty})`,
-        engravingLine2: requirements,
-        eventDate: eventDate || undefined,
-        fulfillmentType: 'pickup',
-      });
-    } catch (err) {
-      console.warn('Inquiry submission notice:', err);
-    }
+    const payload = {
+      customerName: contactName,
+      customerPhone: phone,
+      customerEmail: email,
+      organizationName: orgName,
+      quantity: parseInt(estQty) || 50,
+      engravingLine1: `${category} (Est Qty: ${estQty})`,
+      engravingLine2: requirements,
+      eventDate: eventDate || undefined,
+      fulfillmentType: 'pickup' as const,
+    };
+
+    submitOrderInquiry(payload).catch(console.warn);
+    recordCustomerInquiry({
+      customerName: contactName,
+      customerPhone: phone,
+      customerEmail: email,
+      organizationName: orgName,
+      productName: category,
+      quantity: payload.quantity,
+      engravingLine1: payload.engravingLine1,
+      engravingLine2: requirements,
+      fulfillmentType: 'pickup',
+      eventDate,
+    }).catch(console.warn);
 
     setSubmitted(true);
     setIsSubmitting(false);
 
-    // Direct WhatsApp routing
+    // Direct WhatsApp routing without being blocked by popup blocker
     const text =
       `*TROPHY MALL PONDICHERRY - BULK INSTITUTIONAL INQUIRY*%0A%0A` +
       `🏫 *Institution:* ${orgName}%0A` +
@@ -57,7 +68,11 @@ export default function InstitutionalTenderForm() {
       (requirements ? `📝 *Requirements:* ${requirements}%0A` : '') +
       `%0A👉 *Please prepare and send our official tender / bulk quotation with GST.*`;
 
-    window.open(`https://wa.me/${STORE_INFO.whatsapp}?text=${text}`, '_blank');
+    const url = `https://wa.me/${STORE_INFO.whatsapp}?text=${text}`;
+    const win = window.open(url, '_blank');
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      window.location.href = url;
+    }
   };
 
   return (

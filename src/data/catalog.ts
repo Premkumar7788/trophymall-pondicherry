@@ -1,4 +1,4 @@
-import { Category, Product } from '@/types';
+import { Category, Product } from '../types';
 
 export const STORE_INFO = {
   name: 'Trophy Mall',

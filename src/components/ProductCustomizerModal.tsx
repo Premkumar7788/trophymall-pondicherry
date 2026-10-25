@@ -18,6 +18,7 @@ import {
 import { Product, CustomizationDetails } from '@/types';
 import { STORE_INFO } from '@/data/catalog';
 import { submitOrderInquiry } from '@/lib/supabase';
+import { recordCustomerInquiry } from '@/lib/catalogStore';
 import BrandLogo from './BrandLogo';
 
 interface ProductCustomizerModalProps {
@@ -102,25 +103,34 @@ export default function ProductCustomizerModal({
     }
   };
 
-  const handleWhatsAppInquiry = async () => {
+  const handleWhatsAppInquiry = () => {
     setIsSubmitting(true);
 
-    // Attempt to log to Supabase order_inquiries in the background
-    try {
-      await submitOrderInquiry({
-        customerName: customerName || 'WhatsApp Customer',
-        customerPhone: customerPhone || 'Via WhatsApp',
-        organizationName: organizationName || undefined,
-        productId: product.id,
-        quantity,
-        engravingLine1: line1 || undefined,
-        engravingLine2: line2 || undefined,
-        eventDate: eventDate || undefined,
-        fulfillmentType: fulfillment,
-      });
-    } catch (e) {
-      console.warn('Inquiry logging skipped:', e);
-    }
+    const inquiryPayload = {
+      customerName: customerName || 'Store Visitor',
+      customerPhone: customerPhone || 'Via WhatsApp Chat',
+      organizationName: organizationName || undefined,
+      productId: product.id,
+      quantity,
+      engravingLine1: line1 || product.name,
+      engravingLine2: line2 || undefined,
+      eventDate: eventDate || undefined,
+      fulfillmentType: fulfillment,
+    };
+
+    // Save to local & Supabase in background
+    submitOrderInquiry(inquiryPayload).catch(console.warn);
+    recordCustomerInquiry({
+      customerName: inquiryPayload.customerName,
+      customerPhone: inquiryPayload.customerPhone,
+      organizationName: inquiryPayload.organizationName,
+      productName: product.name,
+      quantity,
+      engravingLine1: line1,
+      engravingLine2: line2,
+      fulfillmentType: fulfillment,
+      eventDate,
+    }).catch(console.warn);
 
     const message =
       `*TROPHY MALL PONDICHERRY - ORDER INQUIRY*%0A%0A` +
@@ -145,7 +155,12 @@ export default function ProductCustomizerModal({
       `%0A👉 *Please confirm availability and share WhatsApp artwork design proof.*`;
 
     const url = `https://wa.me/${STORE_INFO.whatsapp}?text=${message}`;
-    window.open(url, '_blank');
+    
+    // Direct trigger to avoid popup blocker on mobile
+    const win = window.open(url, '_blank');
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      window.location.href = url;
+    }
     setIsSubmitting(false);
   };
 

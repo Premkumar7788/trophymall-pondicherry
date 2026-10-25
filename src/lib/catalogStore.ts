@@ -1,6 +1,6 @@
-import { Product } from '@/types';
-import { PRODUCTS } from '@/data/catalog';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Product } from '../types';
+import { PRODUCTS } from '../data/catalog';
+import { supabase, isSupabaseConfigured } from './supabase';
 
 const STORAGE_KEY = 'trophymall_catalog_products';
 const INQUIRIES_KEY = 'trophymall_customer_inquiries';
@@ -46,16 +46,18 @@ export function getStoredProducts(): Product[] {
  */
 export async function saveStoredProducts(products: Product[]): Promise<boolean> {
   if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    window.dispatchEvent(new Event('catalog-updated'));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+      window.dispatchEvent(new CustomEvent('catalog-updated', { detail: products }));
+    } catch (e) {
+      console.warn('localStorage error:', e);
+    }
   }
 
   // If Supabase is configured, also persist changes
   if (isSupabaseConfigured && supabase) {
     try {
-      // upsert products into Supabase
       const payload = products.map((p) => ({
-        id: p.id.includes('-') && p.id.length > 30 ? p.id : undefined,
         name: p.name,
         slug: p.slug,
         base_price: p.basePrice,
@@ -83,10 +85,37 @@ export async function saveStoredProducts(products: Product[]): Promise<boolean> 
  */
 export function resetStoredProducts(): Product[] {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem(STORAGE_KEY);
-    window.dispatchEvent(new Event('catalog-updated'));
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      window.dispatchEvent(new CustomEvent('catalog-updated', { detail: PRODUCTS }));
+    } catch (e) {
+      console.warn(e);
+    }
   }
   return PRODUCTS;
+}
+
+/**
+ * Save a customer inquiry locally and to Supabase
+ */
+export async function recordCustomerInquiry(inquiry: Omit<StoredInquiry, 'id' | 'createdAt'>): Promise<StoredInquiry> {
+  const newInq: StoredInquiry = {
+    ...inquiry,
+    id: `inq-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+    createdAt: new Date().toISOString(),
+  };
+
+  if (typeof window !== 'undefined') {
+    try {
+      const existing = await getStoredInquiries();
+      const updated = [newInq, ...existing];
+      localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
+  return newInq;
 }
 
 /**
@@ -130,13 +159,30 @@ export async function getStoredInquiries(): Promise<StoredInquiry[]> {
       console.warn(e);
     }
   }
-  return [];
+
+  // Initial demo inquiry for preview
+  return [
+    {
+      id: 'demo-inq-1',
+      customerName: 'Dr. S. Ramesh',
+      customerPhone: '9443212345',
+      customerEmail: 'sports@smvec.ac.in',
+      organizationName: 'SMVEC (Sri Manakula Vinayagar)',
+      productName: 'Annual Sports Day Medals & Cups',
+      quantity: 120,
+      engravingLine1: 'SMVEC Annual Sports Meet 2026',
+      engravingLine2: 'Overall Championship Winner',
+      fulfillmentType: 'pickup',
+      eventDate: '2026-11-15',
+      createdAt: new Date().toISOString(),
+    },
+  ];
 }
 
 /**
- * Helper to parse a CSV line respecting quotes
+ * Robust CSV Line Parser supporting commas, semicolons, and quotes
  */
-function parseCSVLine(line: string): string[] {
+function parseCSVLine(line: string, delimiter: string = ','): string[] {
   const result: string[] = [];
   let current = '';
   let inQuotes = false;
@@ -150,7 +196,7 @@ function parseCSVLine(line: string): string[] {
       } else {
         inQuotes = !inQuotes;
       }
-    } else if (char === ',' && !inQuotes) {
+    } else if (char === delimiter && !inQuotes) {
       result.push(current.trim());
       current = '';
     } else {
@@ -159,6 +205,19 @@ function parseCSVLine(line: string): string[] {
   }
   result.push(current.trim());
   return result;
+}
+
+/**
+ * Detect delimiter (, or ; or \t)
+ */
+function detectDelimiter(firstLine: string): string {
+  const commaCount = (firstLine.match(/,/g) || []).length;
+  const semiCount = (firstLine.match(/;/g) || []).length;
+  const tabCount = (firstLine.match(/\t/g) || []).length;
+
+  if (semiCount > commaCount && semiCount > tabCount) return ';';
+  if (tabCount > commaCount && tabCount > semiCount) return '\t';
+  return ',';
 }
 
 /**
@@ -200,6 +259,18 @@ function cleanPrice(raw: string): number {
 }
 
 /**
+ * Fallback trophy images if CSV row doesn't have an image
+ */
+const DEFAULT_TROPHY_IMAGES = [
+  'https://trophymall.shop/wp-content/uploads/2024/07/E1-23-800x800.webp',
+  'https://trophymall.shop/wp-content/uploads/2024/07/A1-24-800x800.webp',
+  'https://trophymall.shop/wp-content/uploads/2024/07/B1-18-800x800.webp',
+  'https://trophymall.shop/wp-content/uploads/2026/08/Big-Trophy-Cover.png',
+  'https://trophymall.shop/wp-content/uploads/2026/10/Badge-of-Pride-800x800.jpeg',
+  'https://trophymall.shop/wp-content/uploads/2025/01/D2-6-800x800.webp',
+];
+
+/**
  * Parse WhatsApp Business Catalog / Meta Commerce CSV export
  */
 export function parseWhatsAppCSV(csvContent: string): { products: Product[]; errors: string[] } {
@@ -213,15 +284,17 @@ export function parseWhatsAppCSV(csvContent: string): { products: Product[]; err
     return { products: [], errors: ['CSV file is empty or missing data rows.'] };
   }
 
-  // Parse Header
-  const headers = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/[\s_-]+/g, ''));
+  const delimiter = detectDelimiter(lines[0]);
+  const headers = parseCSVLine(lines[0], delimiter).map((h) => 
+    h.toLowerCase().replace(/[\s_\-"']+/g, '')
+  );
 
   // Common WhatsApp / Meta Commerce column aliases
-  const titleIdx = headers.findIndex((h) => ['title', 'name', 'productname', 'itemname'].includes(h));
-  const priceIdx = headers.findIndex((h) => ['price', 'baseprice', 'unitprice', 'cost'].includes(h));
+  const titleIdx = headers.findIndex((h) => ['title', 'name', 'productname', 'itemname', 'product'].includes(h));
+  const priceIdx = headers.findIndex((h) => ['price', 'baseprice', 'unitprice', 'cost', 'rate'].includes(h));
   const mrpIdx = headers.findIndex((h) => ['saleprice', 'mrp', 'originalprice', 'regularprice'].includes(h));
-  const descIdx = headers.findIndex((h) => ['description', 'desc', 'details'].includes(h));
-  const imgIdx = headers.findIndex((h) => ['imagelink', 'imageurl', 'image', 'images', 'photo'].includes(h));
+  const descIdx = headers.findIndex((h) => ['description', 'desc', 'details', 'body'].includes(h));
+  const imgIdx = headers.findIndex((h) => ['imagelink', 'imageurl', 'image', 'images', 'photo', 'picture'].includes(h));
   const catIdx = headers.findIndex((h) => ['category', 'googleproductcategory', 'productcategory', 'type'].includes(h));
   const idIdx = headers.findIndex((h) => ['id', 'retailerid', 'sku', 'productid'].includes(h));
   const availIdx = headers.findIndex((h) => ['availability', 'stock', 'stockstatus'].includes(h));
@@ -229,29 +302,40 @@ export function parseWhatsAppCSV(csvContent: string): { products: Product[]; err
   if (titleIdx === -1) {
     return {
       products: [],
-      errors: ['Could not find a Title/Name column in the CSV. Header must include "title" or "name".'],
+      errors: ['Could not find a Title/Name column in the CSV header. Please make sure one column is named "title" or "name".'],
     };
   }
 
   const parsedProducts: Product[] = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const row = parseCSVLine(lines[i]);
+    const row = parseCSVLine(lines[i], delimiter);
     if (!row || row.length === 0 || !row[titleIdx]) continue;
 
     const title = row[titleIdx];
-    const rawPrice = priceIdx !== -1 ? row[priceIdx] : '450';
-    const basePrice = cleanPrice(rawPrice);
-    const rawMrp = mrpIdx !== -1 ? row[mrpIdx] : '';
-    const mrp = rawMrp ? cleanPrice(rawMrp) : Math.round(basePrice * 1.35);
+    const valA = priceIdx !== -1 ? cleanPrice(row[priceIdx]) : 0;
+    const valB = mrpIdx !== -1 ? cleanPrice(row[mrpIdx]) : 0;
+
+    let basePrice = 450;
+    let mrp = 650;
+
+    if (valA > 0 && valB > 0) {
+      basePrice = Math.min(valA, valB);
+      mrp = Math.max(valA, valB);
+    } else if (valA > 0) {
+      basePrice = valA;
+      mrp = Math.round(valA * 1.35);
+    } else if (valB > 0) {
+      basePrice = valB;
+      mrp = Math.round(valB * 1.35);
+    }
     const description = (descIdx !== -1 && row[descIdx]) 
       ? row[descIdx] 
-      : `${title} available with free custom laser plate engraving at Trophy Mall Pondicherry.`;
+      : `${title} available with complimentary laser plate engraving at Trophy Mall Pondicherry.`;
     
     let imageUrl = (imgIdx !== -1 && row[imgIdx]) ? row[imgIdx].trim() : '';
-    if (!imageUrl || !imageUrl.startsWith('http')) {
-      // default placeholder image
-      imageUrl = 'https://trophymall.shop/wp-content/uploads/2026/08/Sports-Trophies-Cover-768x768.png';
+    if (!imageUrl || (!imageUrl.startsWith('http') && !imageUrl.startsWith('data:'))) {
+      imageUrl = DEFAULT_TROPHY_IMAGES[(i - 1) % DEFAULT_TROPHY_IMAGES.length];
     }
 
     const rawCategory = catIdx !== -1 ? row[catIdx] : '';
@@ -278,6 +362,8 @@ export function parseWhatsAppCSV(csvContent: string): { products: Product[]; err
         ? 'Acrylic' 
         : title.toLowerCase().includes('wood') 
         ? 'Wood' 
+        : title.toLowerCase().includes('crystal')
+        ? 'Crystal'
         : 'Metal & Fiber',
       heightInches: '12 inch',
       heightOptions: ['10 inch', '12 inch', '15 inch'],
@@ -296,7 +382,7 @@ export function parseWhatsAppCSV(csvContent: string): { products: Product[]; err
   }
 
   if (parsedProducts.length === 0) {
-    errors.push('No valid products could be parsed from the provided CSV file.');
+    errors.push('No valid products could be parsed from the CSV file.');
   }
 
   return { products: parsedProducts, errors };
