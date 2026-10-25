@@ -39,7 +39,13 @@
    * Dynamic calculations: 10+ units (10% OFF), 20+ units (15% OFF), 50+ units (25% OFF).
    * Visual badge displaying live rupee savings.
 
-6. **100% Free & Open-Source Stack:**
+6. **Showroom Admin Portal & WhatsApp CSV Sync (`/admin`):**
+   * Password-protected dashboard (Default PIN: `trophy2026`).
+   * **1-Click WhatsApp Catalog CSV Sync:** Drag and drop an exported CSV from WhatsApp Business / Meta Commerce Manager. The website automatically parses images, names, prices, categories, and inventory in seconds!
+   * **Manual Inventory Control:** Add new trophies, edit prices inline, toggle "In Stock" vs "Made to Order", or toggle 24-hour express tags.
+   * **Customer Inquiries Desk:** View customer proofs and tender inquiries submitted from the website with 1-click WhatsApp follow-ups.
+
+7. **100% Free & Open-Source Stack:**
    * **Frontend:** Next.js 14 App Router + TypeScript + Tailwind CSS + Lucide Icons
    * **Database:** Supabase (Free tier managed PostgreSQL with RLS policies)
    * **Hosting:** Vercel / Cloudflare Pages (Zero hosting costs, continuous deployment with SSL)
