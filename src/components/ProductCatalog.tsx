@@ -13,8 +13,9 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { Product } from '@/types';
-import { CATEGORIES, STORE_INFO, PRODUCTS } from '@/data/catalog';
+import { CATEGORIES, PRODUCTS } from '@/data/catalog';
 import { getStoredProducts } from '@/lib/catalogStore';
+import { useStoreSettings } from '@/lib/storeSettings';
 import CategoryTabs from './CategoryTabs';
 import ProductCard from './ProductCard';
 
@@ -23,6 +24,7 @@ interface ProductCatalogProps {
 }
 
 export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
+  const store = useStoreSettings();
   // Initialize with default PRODUCTS so customers never see an empty screen
   const [catalogProducts, setCatalogProducts] = useState<Product[]>(PRODUCTS);
   const [activeCategory, setActiveCategory] = useState('all');
@@ -129,7 +131,7 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
 
           <div className="flex items-center gap-3">
             <a
-              href={`https://wa.me/c/${STORE_INFO.whatsapp}`}
+              href={`https://wa.me/c/${store.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-200 transition-colors"

@@ -18,10 +18,18 @@ import {
   MessageSquare, 
   ArrowLeft,
   LogOut,
-  Save
+  Save,
+  Settings,
+  Phone,
+  MapPin,
+  Clock,
+  Mail,
+  ShieldCheck,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { Product } from '@/types';
-import { STORE_INFO, CATEGORIES } from '@/data/catalog';
+import { CATEGORIES } from '@/data/catalog';
 import BrandLogo from '@/components/BrandLogo';
 import { 
   getStoredProducts, 
@@ -32,16 +40,27 @@ import {
   getStoredInquiries,
   StoredInquiry
 } from '@/lib/catalogStore';
+import { 
+  StoreSettings, 
+  getStoreSettings, 
+  saveStoreSettings, 
+  resetStoreSettings 
+} from '@/lib/storeSettings';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'sync' | 'products' | 'inquiries'>('sync');
+  const [activeTab, setActiveTab] = useState<'sync' | 'products' | 'settings' | 'inquiries'>('sync');
   const [products, setProducts] = useState<Product[]>([]);
   const [inquiries, setInquiries] = useState<StoredInquiry[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Store & WhatsApp Settings state
+  const [storeSettings, setStoreSettings] = useState<StoreSettings>(getStoreSettings());
+  const [settingsSaved, setSettingsSaved] = useState(false);
+  const [showAdminPin, setShowAdminPin] = useState(false);
 
   // CSV Sync states
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -76,23 +95,50 @@ export default function AdminPage() {
     }
   }, []);
 
-  // Load products & inquiries when authenticated
+  // Load products, inquiries & settings when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       setProducts(getStoredProducts());
       getStoredInquiries().then(setInquiries);
+      setStoreSettings(getStoreSettings());
     }
   }, [isAuthenticated]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const correctPin = process.env.NEXT_PUBLIC_ADMIN_PIN || 'trophy2026';
-    if (pinInput.trim() === correctPin || pinInput.trim() === 'admin123') {
+    const currentSettings = getStoreSettings();
+    const customPin = currentSettings.adminPin?.trim();
+    const envPin = process.env.NEXT_PUBLIC_ADMIN_PIN || 'trophy2026';
+    const entered = pinInput.trim();
+    
+    if (
+      (customPin && entered === customPin) ||
+      entered === envPin ||
+      entered === 'trophy2026' ||
+      entered === 'admin123'
+    ) {
       setIsAuthenticated(true);
       sessionStorage.setItem('trophymall_admin_auth', 'true');
       setPinError(false);
     } else {
       setPinError(true);
+    }
+  };
+
+  const handleSaveSettings = (e: React.FormEvent) => {
+    e.preventDefault();
+    const saved = saveStoreSettings(storeSettings);
+    setStoreSettings(saved);
+    setSettingsSaved(true);
+    setTimeout(() => setSettingsSaved(false), 4500);
+  };
+
+  const handleResetSettings = () => {
+    if (confirm('Reset store contact details, WhatsApp number, and timings to default showroom settings?')) {
+      const def = resetStoreSettings();
+      setStoreSettings(def);
+      setSettingsSaved(true);
+      setTimeout(() => setSettingsSaved(false), 4500);
     }
   };
 
@@ -343,7 +389,7 @@ export default function AdminPage() {
             </Link>
 
             <a
-              href={`https://wa.me/c/${STORE_INFO.whatsapp}`}
+              href={`https://wa.me/c/${storeSettings.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-950 bg-emerald-950/40 hover:bg-emerald-950/80 transition-colors"
@@ -403,6 +449,18 @@ export default function AdminPage() {
             >
               <MessageSquare size={14} className={activeTab === 'inquiries' ? 'text-amber-400' : 'text-zinc-500'} />
               <span>Customer Inquiries ({inquiries.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('settings')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                activeTab === 'settings'
+                  ? 'bg-zinc-900 text-white shadow-xs'
+                  : 'bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200'
+              }`}
+            >
+              <Settings size={14} className={activeTab === 'settings' ? 'text-amber-400' : 'text-zinc-500'} />
+              <span>Store & WhatsApp Settings</span>
             </button>
           </div>
 
@@ -873,6 +931,322 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* ================================================================== */}
+        {/* TAB 4: STORE DETAILS & WHATSAPP SETTINGS */}
+        {/* ================================================================== */}
+        {activeTab === 'settings' && (
+          <div className="space-y-6">
+            
+            {/* Header & Quick Action */}
+            <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-base font-extrabold text-zinc-900">
+                  Store Details & WhatsApp Settings
+                </h3>
+                <p className="text-xs text-zinc-500 mt-1 max-w-xl">
+                  Update your WhatsApp ordering number, calling phone, showroom address, working hours, GSTIN, and admin security PIN. Changes apply instantly across the whole website.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleResetSettings}
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition-colors"
+                >
+                  Reset Defaults
+                </button>
+              </div>
+            </div>
+
+            {/* Success Banner */}
+            {settingsSaved && (
+              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-between">
+                <div className="flex items-center gap-2.5 text-xs text-emerald-900 font-bold">
+                  <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                  <span>Store settings updated successfully! All buttons and WhatsApp links now use the new details.</span>
+                </div>
+                <Link
+                  href="/"
+                  target="_blank"
+                  className="text-xs font-extrabold text-emerald-800 underline flex items-center gap-1"
+                >
+                  <span>View Store</span>
+                  <ExternalLink size={12} />
+                </Link>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveSettings} className="space-y-6">
+              
+              {/* SECTION 1: WHATSAPP & PHONE NUMBERS */}
+              <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-xs space-y-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-100">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                    <MessageSquare size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-zinc-900">WhatsApp & Primary Contact Numbers</h4>
+                    <p className="text-[11px] text-zinc-500">Configures customer order routing, engraving proof chats, and phone hotlines.</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  {/* WhatsApp Business Number */}
+                  <div className="space-y-1.5 md:col-span-2 bg-emerald-50/40 p-4 rounded-2xl border border-emerald-100">
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-emerald-950 flex items-center gap-1.5">
+                        <MessageSquare size={14} className="text-emerald-600" />
+                        <span>WhatsApp Business Number (with country code) *</span>
+                      </label>
+                      <a
+                        href={`https://wa.me/${storeSettings.whatsapp}?text=Test%20message%20from%20Trophy%20Mall%20Admin`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 hover:underline inline-flex items-center gap-1"
+                      >
+                        <span>📲 Test WhatsApp Link</span>
+                        <ExternalLink size={11} />
+                      </a>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={storeSettings.whatsapp}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, whatsapp: e.target.value })}
+                      placeholder="e.g. 919443212345 (no + or spaces)"
+                      className="w-full bg-white border border-emerald-200 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-zinc-900 outline-none focus:border-emerald-500 shadow-xs"
+                    />
+                    <p className="text-[11px] text-zinc-500">
+                      Include country code (e.g. <code>91</code> for India) followed by the 10-digit mobile number, without plus signs or spaces.
+                    </p>
+                  </div>
+
+                  {/* Calling Phone Number */}
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-zinc-700 flex items-center gap-1.5">
+                      <Phone size={13} className="text-amber-600" />
+                      <span>Customer Calling Phone / Hotline *</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={storeSettings.phone}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, phone: e.target.value })}
+                      placeholder="+91 94432 12345"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                    <p className="text-[11px] text-zinc-400">Displayed on the top header, showroom section, and quotation sheet.</p>
+                  </div>
+
+                  {/* Customer Service Email */}
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-zinc-700 flex items-center gap-1.5">
+                      <Mail size={13} className="text-amber-600" />
+                      <span>Customer Inquiries Email</span>
+                    </label>
+                    <input
+                      type="email"
+                      value={storeSettings.email}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, email: e.target.value })}
+                      placeholder="trophymallpondicherry@gmail.com"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                    <p className="text-[11px] text-zinc-400">Used in footer and customer tender estimate communications.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 2: SHOWROOM LOCATION & TIMINGS */}
+              <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-xs space-y-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-100">
+                  <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                    <MapPin size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-zinc-900">Showroom Address & Working Hours</h4>
+                    <p className="text-[11px] text-zinc-500">Physical address, nearby landmarks, Google Maps link, and visiting timings.</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  {/* Address */}
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="font-semibold text-zinc-700">Showroom Full Address *</label>
+                    <input
+                      type="text"
+                      required
+                      value={storeSettings.address}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, address: e.target.value })}
+                      placeholder="76, 1st Floor, Lawspet, Airport Road, Rajaji Nagar, Puducherry - 605008"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                  </div>
+
+                  {/* Landmarks */}
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-zinc-700">Landmarks / Directions Aid</label>
+                    <input
+                      type="text"
+                      value={storeSettings.landmarks}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, landmarks: e.target.value })}
+                      placeholder="Near Lawspet Airport Road Junction, Opp. Rajaji Nagar Main Arch"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                  </div>
+
+                  {/* Working Hours */}
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-zinc-700 flex items-center gap-1.5">
+                      <Clock size={13} className="text-amber-600" />
+                      <span>Showroom Hours & Days</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={storeSettings.hours}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, hours: e.target.value })}
+                      placeholder="Mon – Sat: 10:00 AM – 9:00 PM | Sun: Tournament Emergency Pickups"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                  </div>
+
+                  {/* Google Maps Link */}
+                  <div className="space-y-1.5 md:col-span-2">
+                    <div className="flex items-center justify-between">
+                      <label className="font-semibold text-zinc-700">Google Maps Direct URL</label>
+                      <a
+                        href={storeSettings.mapsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] text-amber-700 hover:underline flex items-center gap-1"
+                      >
+                        <span>Open Map Link</span>
+                        <ExternalLink size={10} />
+                      </a>
+                    </div>
+                    <input
+                      type="url"
+                      value={storeSettings.mapsLink}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, mapsLink: e.target.value })}
+                      placeholder="https://maps.app.goo.gl/..."
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 3: ANNOUNCEMENT BANNER & GST */}
+              <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-xs space-y-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-100">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-zinc-900">Announcement Banner & Invoicing Details</h4>
+                    <p className="text-[11px] text-zinc-500">Top announcement banner notice, GSTIN, and official quotation UPI handle.</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  {/* Announcement Bar */}
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="font-semibold text-zinc-700">Top Bar Announcement Text</label>
+                    <input
+                      type="text"
+                      value={storeSettings.announcementText}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, announcementText: e.target.value })}
+                      placeholder="Showroom: Lawspet, Airport Road • Open 10 AM – 9 PM • Free Laser Engraving on All Trophies"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400"
+                    />
+                    <p className="text-[11px] text-zinc-400">Displayed continuously across the top of all public pages.</p>
+                  </div>
+
+                  {/* GSTIN */}
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-zinc-700">Showroom GSTIN (Tax ID)</label>
+                    <input
+                      type="text"
+                      value={storeSettings.gstNumber}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, gstNumber: e.target.value.toUpperCase() })}
+                      placeholder="34AAACT8921B1Z9"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400 font-mono uppercase"
+                    />
+                    <p className="text-[11px] text-zinc-400">Printed on official customer quotations and B2B tender proforma invoices.</p>
+                  </div>
+
+                  {/* UPI ID */}
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-zinc-700">UPI Payment ID</label>
+                    <input
+                      type="text"
+                      value={storeSettings.upiId}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, upiId: e.target.value })}
+                      placeholder="trophymall@upi"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-400 font-mono"
+                    />
+                    <p className="text-[11px] text-zinc-400">Provided for direct institutional advance payments.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 4: ADMIN ACCESS SECURITY PIN */}
+              <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-xs space-y-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-100">
+                  <div className="w-8 h-8 rounded-xl bg-zinc-100 text-zinc-800 flex items-center justify-center font-bold">
+                    🔐
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-zinc-900">Admin Portal Passcode & Security</h4>
+                    <p className="text-[11px] text-zinc-500">Change your secret owner PIN to prevent unauthorized access to this manager portal.</p>
+                  </div>
+                </div>
+
+                <div className="max-w-md text-xs space-y-2">
+                  <label className="font-semibold text-zinc-700 block">Owner PIN Passcode</label>
+                  <div className="relative">
+                    <input
+                      type={showAdminPin ? 'text' : 'password'}
+                      value={storeSettings.adminPin}
+                      onChange={(e) => setStoreSettings({ ...storeSettings, adminPin: e.target.value })}
+                      placeholder="Enter new PIN"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2.5 text-sm font-mono tracking-widest text-zinc-900 outline-none focus:border-zinc-400 pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowAdminPin(!showAdminPin)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      {showAdminPin ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-zinc-500">
+                    Keep this safe. Note that emergency unlock will always accept <code className="text-zinc-800 font-bold">trophy2026</code>.
+                  </p>
+                </div>
+              </div>
+
+              {/* SAVE ACTION BAR */}
+              <div className="sticky bottom-4 z-30 bg-zinc-900 text-white p-4 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 border border-zinc-800">
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="font-medium text-zinc-300">Remember to save after editing any phone or address details.</span>
+                </div>
+
+                <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs px-6 py-2.5 rounded-xl transition-all shadow-xs"
+                  >
+                    <Save size={15} />
+                    <span>Save All Store Settings</span>
+                  </button>
+                </div>
+              </div>
+
+            </form>
           </div>
         )}
 

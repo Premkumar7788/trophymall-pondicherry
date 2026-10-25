@@ -9,7 +9,7 @@ import {
   Check
 } from 'lucide-react';
 import { Product } from '@/types';
-import { STORE_INFO } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +17,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onCustomize }: ProductCardProps) {
+  const store = useStoreSettings();
   const discountPercent = Math.round(
     ((product.mrp - product.basePrice) / product.mrp) * 100
   );
@@ -35,7 +36,7 @@ export default function ProductCard({ product, onCustomize }: ProductCardProps) 
       `🛠️ *Material:* ${product.material}%0A%0A` +
       `Hi, please confirm availability for showroom pickup in Pondicherry and share design proof options.`;
     
-    window.open(`https://wa.me/${STORE_INFO.whatsapp}?text=${text}`, '_blank');
+    window.open(`https://wa.me/${store.whatsapp}?text=${text}`, '_blank');
   };
 
   return (

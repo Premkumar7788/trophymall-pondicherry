@@ -16,9 +16,9 @@ import {
   Truck
 } from 'lucide-react';
 import { Product, CustomizationDetails } from '@/types';
-import { STORE_INFO } from '@/data/catalog';
 import { submitOrderInquiry } from '@/lib/supabase';
 import { recordCustomerInquiry } from '@/lib/catalogStore';
+import { useStoreSettings } from '@/lib/storeSettings';
 import BrandLogo from './BrandLogo';
 
 interface ProductCustomizerModalProps {
@@ -36,6 +36,7 @@ export default function ProductCustomizerModal({
   onAddToQuote,
   onGenerateDirectQuote,
 }: ProductCustomizerModalProps) {
+  const store = useStoreSettings();
   const [selectedHeight, setSelectedHeight] = useState(
     product?.heightOptions && product.heightOptions.length > 0
       ? product.heightOptions[0]
@@ -154,7 +155,7 @@ export default function ProductCustomizerModal({
       (customerName ? `👤 *Contact Name:* ${customerName}%0A` : '') +
       `%0A👉 *Please confirm availability and share WhatsApp artwork design proof.*`;
 
-    const url = `https://wa.me/${STORE_INFO.whatsapp}?text=${message}`;
+    const url = `https://wa.me/${store.whatsapp}?text=${message}`;
     
     // Direct trigger to avoid popup blocker on mobile
     const win = window.open(url, '_blank');

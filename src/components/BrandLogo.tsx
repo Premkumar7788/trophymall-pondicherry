@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Trophy } from 'lucide-react';
-import { STORE_INFO } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 
 interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -17,6 +17,7 @@ export default function BrandLogo({
   showSubtitle = true,
 }: BrandLogoProps) {
   const [imgError, setImgError] = useState(false);
+  const store = useStoreSettings();
 
   const sizeConfigs = {
     sm: {
@@ -56,8 +57,8 @@ export default function BrandLogo({
       >
         {!imgError ? (
           <Image
-            src={STORE_INFO.logoUrl}
-            alt="Trophy Mall Pondicherry"
+            src={store.logoUrl}
+            alt={`${store.name} ${store.location}`}
             width={config.imgSize}
             height={config.imgSize}
             className="w-full h-full object-contain p-1"

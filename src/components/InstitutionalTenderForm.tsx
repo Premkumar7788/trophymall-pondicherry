@@ -9,9 +9,10 @@ import {
 } from 'lucide-react';
 import { submitOrderInquiry } from '@/lib/supabase';
 import { recordCustomerInquiry } from '@/lib/catalogStore';
-import { STORE_INFO } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 
 export default function InstitutionalTenderForm() {
+  const store = useStoreSettings();
   const [orgName, setOrgName] = useState('');
   const [contactName, setContactName] = useState('');
   const [phone, setPhone] = useState('');
@@ -68,7 +69,7 @@ export default function InstitutionalTenderForm() {
       (requirements ? `📝 *Requirements:* ${requirements}%0A` : '') +
       `%0A👉 *Please prepare and send our official tender / bulk quotation with GST.*`;
 
-    const url = `https://wa.me/${STORE_INFO.whatsapp}?text=${text}`;
+    const url = `https://wa.me/${store.whatsapp}?text=${text}`;
     const win = window.open(url, '_blank');
     if (!win || win.closed || typeof win.closed === 'undefined') {
       window.location.href = url;

@@ -11,7 +11,7 @@ import {
   FileText,
   ChevronRight
 } from 'lucide-react';
-import { STORE_INFO } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 import BrandLogo from './BrandLogo';
 
 interface HeaderProps {
@@ -21,6 +21,7 @@ interface HeaderProps {
 
 export default function Header({ onOpenQuoteModal, quoteCount = 0 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const store = useStoreSettings();
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 no-print transition-all">
@@ -30,16 +31,16 @@ export default function Header({ onOpenQuoteModal, quoteCount = 0 }: HeaderProps
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             <span className="font-medium text-zinc-200">Showroom:</span>
-            <span className="text-zinc-400 hidden sm:inline">Lawspet, Airport Road, Rajaji Nagar</span>
-            <span className="text-zinc-500">•</span>
+            <span className="text-zinc-300 hidden sm:inline">{store.announcementText}</span>
+            <span className="text-zinc-500 hidden sm:inline">•</span>
             <span className="text-zinc-300 flex items-center gap-1">
-              <Clock size={11} className="text-amber-400 inline" /> Open 10 AM – 9 PM
+              <Clock size={11} className="text-amber-400 inline" /> {store.hours}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
             <a 
-              href={STORE_INFO.mapsLink} 
+              href={store.mapsLink} 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-white transition-colors flex items-center gap-1 font-medium text-zinc-300"
@@ -94,7 +95,7 @@ export default function Header({ onOpenQuoteModal, quoteCount = 0 }: HeaderProps
             )}
 
             <a
-              href={`https://wa.me/${STORE_INFO.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20inquire%20about%20trophies%20and%20custom%20engraving.`}
+              href={`https://wa.me/${store.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20inquire%20about%20trophies%20and%20custom%20engraving.`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm"
@@ -107,7 +108,7 @@ export default function Header({ onOpenQuoteModal, quoteCount = 0 }: HeaderProps
           {/* Mobile Menu Button */}
           <div className="flex sm:hidden items-center gap-2">
             <a
-              href={`https://wa.me/${STORE_INFO.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!`}
+              href={`https://wa.me/${store.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-zinc-800 bg-zinc-100 rounded-lg"
@@ -133,10 +134,10 @@ export default function Header({ onOpenQuoteModal, quoteCount = 0 }: HeaderProps
           <div className="bg-zinc-50 p-2.5 rounded-xl border border-zinc-200/80 flex items-center justify-between text-xs font-medium text-zinc-800">
             <div className="flex items-center gap-1.5">
               <MapPin size={14} className="text-amber-600" />
-              <span>Lawspet Showroom • Open 10 AM - 9 PM</span>
+              <span>{store.name} • {store.hours}</span>
             </div>
             <a 
-              href={STORE_INFO.mapsLink} 
+              href={store.mapsLink} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-zinc-900 font-bold underline"
@@ -210,7 +211,7 @@ export default function Header({ onOpenQuoteModal, quoteCount = 0 }: HeaderProps
             )}
 
             <a
-              href={`https://wa.me/${STORE_INFO.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20order%20trophies.`}
+              href={`https://wa.me/${store.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20order%20trophies.`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-emerald-600 text-white font-semibold rounded-xl text-xs"

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { 
@@ -10,7 +12,8 @@ import {
   PhoneCall,
   Sparkles
 } from 'lucide-react';
-import { STORE_INFO, INSTITUTIONS_SERVED, SHOWROOM_GALLERY_IMAGES } from '@/data/catalog';
+import { INSTITUTIONS_SERVED, SHOWROOM_GALLERY_IMAGES } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 
 interface HeroProps {
   onExploreCatalog: () => void;
@@ -18,6 +21,7 @@ interface HeroProps {
 }
 
 export default function Hero({ onExploreCatalog, onOpenInstitutionalQuote }: HeroProps) {
+  const store = useStoreSettings();
   return (
     <section className="relative bg-zinc-950 text-white pt-10 pb-16 sm:pt-14 sm:pb-20 overflow-hidden border-b border-zinc-800/80">
       {/* Subtle Minimalist Ambient Background Light */}
@@ -79,7 +83,7 @@ export default function Hero({ onExploreCatalog, onOpenInstitutionalQuote }: Her
               </button>
 
               <a
-                href={`https://wa.me/${STORE_INFO.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20request%20a%20custom%20trophy%20quote.`}
+                href={`https://wa.me/${store.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20request%20a%20custom%20trophy%20quote.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700/80 font-medium px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
@@ -89,7 +93,7 @@ export default function Hero({ onExploreCatalog, onOpenInstitutionalQuote }: Her
               </a>
 
               <a
-                href={STORE_INFO.mapsLink}
+                href={store.mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto text-zinc-400 hover:text-white px-4 py-3.5 rounded-xl transition-colors flex items-center justify-center gap-1.5 text-xs font-medium"
@@ -104,10 +108,10 @@ export default function Hero({ onExploreCatalog, onOpenInstitutionalQuote }: Her
             <div className="pt-1 flex items-center justify-center lg:justify-start gap-3 text-xs text-zinc-500">
               <span className="flex items-center gap-1">
                 <PhoneCall size={13} className="text-amber-400" />
-                Showroom: <a href={`tel:${STORE_INFO.phone}`} className="text-zinc-300 font-medium hover:underline">{STORE_INFO.phone}</a>
+                Showroom: <a href={`tel:${store.phone}`} className="text-zinc-300 font-medium hover:underline">{store.phone}</a>
               </span>
               <span>•</span>
-              <span>Mon – Sat: 10AM – 9PM</span>
+              <span>{store.hours}</span>
             </div>
 
           </div>
@@ -132,7 +136,7 @@ export default function Hero({ onExploreCatalog, onOpenInstitutionalQuote }: Her
                 </div>
 
                 <a
-                  href={STORE_INFO.mapsLink}
+                  href={store.mapsLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[10px] text-amber-400 hover:underline flex items-center gap-1 font-semibold"

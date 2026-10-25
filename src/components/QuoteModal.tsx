@@ -8,7 +8,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { QuoteItem } from '@/types';
-import { STORE_INFO } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 import BrandLogo from './BrandLogo';
 
 interface QuoteModalProps {
@@ -26,6 +26,7 @@ export default function QuoteModal({
   onRemoveItem,
   onClearAll,
 }: QuoteModalProps) {
+  const store = useStoreSettings();
   const [customerOrg, setCustomerOrg] = useState('');
   const [contactPerson, setContactPerson] = useState('');
   const [contactPhone, setContactPhone] = useState('');
@@ -73,10 +74,10 @@ export default function QuoteModal({
       `%0A*Items List:*${itemsText}%0A` +
       `*Total Quantity:* ${totalQuantity} pcs%0A` +
       `*Grand Total Estimate:* ₹${grandTotal.toLocaleString('en-IN')}%0A%0A` +
-      `📍 *Showroom:* 76, 1st Floor, Lawspet, Pondicherry%0A` +
+      `📍 *Showroom:* ${store.address}%0A` +
       `👉 Please review and send official GST proforma invoice / design proofs.`;
 
-    window.open(`https://wa.me/${STORE_INFO.whatsapp}?text=${message}`, '_blank');
+    window.open(`https://wa.me/${store.whatsapp}?text=${message}`, '_blank');
   };
 
   return (
@@ -133,7 +134,10 @@ export default function QuoteModal({
                 Validity: <strong>15 Days</strong>
               </div>
               <div className="text-zinc-500">
-                Ph: <strong>{STORE_INFO.phone}</strong>
+                Ph: <strong>{store.phone}</strong>
+              </div>
+              <div className="text-zinc-500">
+                GSTIN: <strong className="font-mono">{store.gstNumber}</strong>
               </div>
             </div>
           </div>

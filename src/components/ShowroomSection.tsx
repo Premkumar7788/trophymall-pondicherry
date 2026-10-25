@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { 
@@ -9,12 +11,14 @@ import {
   PhoneCall,
   Sparkles
 } from 'lucide-react';
-import { STORE_INFO, SHOWROOM_GALLERY_IMAGES } from '@/data/catalog';
+import { SHOWROOM_GALLERY_IMAGES } from '@/data/catalog';
+import { useStoreSettings } from '@/lib/storeSettings';
 import BrandLogo from './BrandLogo';
 
 export default function ShowroomSection() {
-  const directMapsLink = STORE_INFO.mapsLink;
-  const shareMapsLink = STORE_INFO.mapsShareLink;
+  const store = useStoreSettings();
+  const directMapsLink = store.mapsLink;
+  const shareMapsLink = store.mapsShareLink;
 
   const deliveryAreas = [
     'Lawspet',
@@ -67,10 +71,10 @@ export default function ShowroomSection() {
               <div>
                 <h4 className="font-bold text-zinc-900 text-sm">Showroom Address</h4>
                 <p className="text-xs font-medium text-zinc-700 mt-1 leading-snug">
-                  {STORE_INFO.address}
+                  {store.address}
                 </p>
                 <p className="text-[11px] text-zinc-500 mt-0.5">
-                  Landmark: {STORE_INFO.landmarks}
+                  Landmark: {store.landmarks}
                 </p>
                 <div className="flex items-center gap-3 mt-2.5">
                   <a
@@ -103,8 +107,7 @@ export default function ShowroomSection() {
               <div>
                 <h4 className="font-bold text-zinc-900 text-sm">Business Hours</h4>
                 <p className="text-xs text-zinc-600 mt-1">
-                  <strong>Monday – Saturday:</strong> 10:00 AM – 9:00 PM<br />
-                  <strong>Sunday:</strong> Prior Appointment / Urgent Tournament Pickups
+                  {store.hours}
                 </p>
               </div>
             </div>
@@ -117,8 +120,8 @@ export default function ShowroomSection() {
               <div>
                 <h4 className="font-bold text-zinc-900 text-sm">Direct Showroom Hotline</h4>
                 <p className="text-xs font-semibold text-zinc-900 mt-1">
-                  <a href={`tel:${STORE_INFO.phone}`} className="hover:text-amber-700 transition-colors">
-                    {STORE_INFO.phone}
+                  <a href={`tel:${store.phone}`} className="hover:text-amber-700 transition-colors">
+                    {store.phone}
                   </a>
                 </p>
                 <p className="text-[11px] text-zinc-500 mt-0.5">
@@ -158,7 +161,7 @@ export default function ShowroomSection() {
               </a>
 
               <a
-                href={`tel:${STORE_INFO.phone}`}
+                href={`tel:${store.phone}`}
                 className="inline-flex items-center justify-center gap-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold py-3 px-5 rounded-xl transition-all text-xs"
               >
                 <PhoneCall size={14} />
