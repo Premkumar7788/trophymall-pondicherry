@@ -1,14 +1,16 @@
 import React from 'react';
+import Image from 'next/image';
 import { 
   MapPin, 
-  Phone, 
   Clock, 
   ExternalLink, 
   Truck, 
   Navigation,
-  PhoneCall
+  PhoneCall,
+  Sparkles
 } from 'lucide-react';
-import { STORE_INFO } from '@/data/catalog';
+import { STORE_INFO, SHOWROOM_GALLERY_IMAGES } from '@/data/catalog';
+import BrandLogo from './BrandLogo';
 
 export default function ShowroomSection() {
   const directMapsLink = STORE_INFO.mapsLink;
@@ -23,64 +25,69 @@ export default function ShowroomSection() {
     'Reddiarpalayam',
     'Villianur',
     'Gorimedu',
-    'Kalapet (PU Campus)',
+    'Kalapet',
     'Auroville',
     'Cuddalore',
     'Villupuram',
   ];
 
   return (
-    <section className="py-20 bg-slate-50 border-t border-slate-200" id="showroom">
+    <section className="py-16 bg-white border-t border-zinc-200/80" id="showroom">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-amber-700 text-xs font-black uppercase tracking-widest bg-amber-100/70 px-3.5 py-1.5 rounded-full border border-amber-300/60">
-            Physical Store & Showroom
+        <div className="text-center max-w-xl mx-auto mb-12">
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500 bg-zinc-100 px-3 py-1 rounded-full">
+            Physical Showroom & Atelier
           </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 mt-3 tracking-tight">
             Visit Trophy Mall in Pondicherry
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base mt-2.5">
-            Examine trophy finishes, explore 500+ physical display samples, and review laser-engraved proof plaques in person before event day.
+          <p className="text-zinc-500 text-xs sm:text-sm mt-2">
+            Examine trophy finishes, explore 500+ physical display samples, and review laser-engraved proof plaques in person before your event.
           </p>
         </div>
 
         {/* Main Showroom Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 sm:p-10 rounded-3xl shadow-sm border border-slate-200/90">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start bg-zinc-50/70 p-6 sm:p-8 rounded-3xl border border-zinc-200/80">
           
           {/* Details Column */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-5">
             
+            {/* Perfectly Aligned Shop Name & Logo Lockup */}
+            <div className="pb-4 border-b border-zinc-200/80">
+              <BrandLogo size="md" />
+            </div>
+
             {/* Address */}
-            <div className="flex items-start gap-4">
-              <div className="p-3.5 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200/60 shrink-0">
-                <MapPin size={24} />
+            <div className="flex items-start gap-3.5">
+              <div className="p-2.5 bg-white border border-zinc-200 text-zinc-800 rounded-xl shrink-0 shadow-xs">
+                <MapPin size={20} className="text-amber-600" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 text-base">Showroom Address</h4>
-                <p className="text-sm font-semibold text-slate-800 mt-1 leading-snug">
+                <h4 className="font-bold text-zinc-900 text-sm">Showroom Address</h4>
+                <p className="text-xs font-medium text-zinc-700 mt-1 leading-snug">
                   {STORE_INFO.address}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-[11px] text-zinc-500 mt-0.5">
                   Landmark: {STORE_INFO.landmarks}
                 </p>
-                <div className="flex flex-wrap items-center gap-3 mt-3">
+                <div className="flex items-center gap-3 mt-2.5">
                   <a
                     href={directMapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg border border-amber-200 transition-colors"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200/70 transition-colors"
                   >
                     <span>Open in Google Maps</span>
-                    <ExternalLink size={12} />
+                    <ExternalLink size={11} />
                   </a>
 
                   <a
                     href={shareMapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 underline"
+                    className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-800 underline"
                   >
                     <span>Short Link</span>
                   </a>
@@ -89,51 +96,48 @@ export default function ShowroomSection() {
             </div>
 
             {/* Business Hours */}
-            <div className="flex items-start gap-4">
-              <div className="p-3.5 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200/60 shrink-0">
-                <Clock size={24} />
+            <div className="flex items-start gap-3.5">
+              <div className="p-2.5 bg-white border border-zinc-200 text-zinc-800 rounded-xl shrink-0 shadow-xs">
+                <Clock size={20} className="text-amber-600" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 text-base">Business Hours</h4>
-                <p className="text-sm text-slate-700 mt-1">
+                <h4 className="font-bold text-zinc-900 text-sm">Business Hours</h4>
+                <p className="text-xs text-zinc-600 mt-1">
                   <strong>Monday – Saturday:</strong> 10:00 AM – 9:00 PM<br />
-                  <strong>Sunday:</strong> Prior Appointment / Urgent Tournament Emergency Pickups
+                  <strong>Sunday:</strong> Prior Appointment / Urgent Tournament Pickups
                 </p>
-                <span className="inline-block mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                  Showroom Open for In-Store Walk-ins
-                </span>
               </div>
             </div>
 
             {/* Direct Inquiries & Phone */}
-            <div className="flex items-start gap-4">
-              <div className="p-3.5 bg-amber-50 text-amber-600 rounded-2xl border border-amber-200/60 shrink-0">
-                <PhoneCall size={24} />
+            <div className="flex items-start gap-3.5">
+              <div className="p-2.5 bg-white border border-zinc-200 text-zinc-800 rounded-xl shrink-0 shadow-xs">
+                <PhoneCall size={20} className="text-amber-600" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-900 text-base">Direct Showroom Hotline</h4>
-                <p className="text-sm font-semibold text-slate-900 mt-1">
-                  <a href={`tel:${STORE_INFO.phone}`} className="hover:text-amber-600 transition-colors">
+                <h4 className="font-bold text-zinc-900 text-sm">Direct Showroom Hotline</h4>
+                <p className="text-xs font-semibold text-zinc-900 mt-1">
+                  <a href={`tel:${STORE_INFO.phone}`} className="hover:text-amber-700 transition-colors">
                     {STORE_INFO.phone}
                   </a>
                 </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Available for School Bulk Quotes, Custom Mementos, and Tender Estimates.
+                <p className="text-[11px] text-zinc-500 mt-0.5">
+                  Direct line for school bulk quotes, event orders & tenders.
                 </p>
               </div>
             </div>
 
             {/* Local Delivery Coverage Areas */}
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
-              <div className="flex items-center gap-2 mb-2 text-xs font-bold text-slate-800">
-                <Truck size={15} className="text-amber-600" />
-                <span>Showroom Pickup & Regional Delivery Coverage:</span>
+            <div className="p-3.5 bg-white rounded-2xl border border-zinc-200/80">
+              <div className="flex items-center gap-1.5 mb-2 text-xs font-semibold text-zinc-800">
+                <Truck size={14} className="text-amber-600" />
+                <span>Showroom Pickup & Regional Delivery Areas:</span>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1">
                 {deliveryAreas.map((area, idx) => (
                   <span
                     key={idx}
-                    className="text-[11px] bg-white border border-slate-200 px-2 py-0.5 rounded-md text-slate-700 font-medium"
+                    className="text-[10px] bg-zinc-50 border border-zinc-200/80 px-2 py-0.5 rounded text-zinc-600 font-medium"
                   >
                     {area}
                   </span>
@@ -142,42 +146,72 @@ export default function ShowroomSection() {
             </div>
 
             {/* One-Tap Action */}
-            <div className="pt-2 flex flex-col sm:flex-row gap-3">
+            <div className="pt-1 flex flex-col sm:flex-row gap-2.5">
               <a
                 href={directMapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl transition-all shadow-md text-sm"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-black text-white font-semibold py-3 px-5 rounded-xl transition-all shadow-xs text-xs uppercase tracking-wider"
               >
-                <Navigation size={18} className="text-amber-400" />
+                <Navigation size={15} />
                 <span>Get Driving Directions</span>
               </a>
 
               <a
                 href={`tel:${STORE_INFO.phone}`}
-                className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3.5 px-6 rounded-2xl transition-all text-sm"
+                className="inline-flex items-center justify-center gap-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold py-3 px-5 rounded-xl transition-all text-xs"
               >
-                <Phone size={17} />
+                <PhoneCall size={14} />
                 <span>Call Showroom</span>
               </a>
             </div>
 
           </div>
 
-          {/* Interactive Map Embed Column */}
-          <div className="lg:col-span-7 h-80 sm:h-[420px] rounded-2xl overflow-hidden border border-slate-200 shadow-inner relative group">
-            <iframe
-              title="Trophy Mall Pondicherry Location"
-              src="https://maps.google.com/maps?q=Lawspet+Airport+Road+Rajaji+Nagar+Puducherry&t=&z=15&ie=UTF8&iwloc=&output=embed"
-              className="w-full h-full border-0"
-              allowFullScreen={false}
-              loading="lazy"
-            />
-            
-            <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-200 shadow-md text-[11px] font-bold text-slate-800 pointer-events-none flex items-center gap-1.5">
-              <MapPin size={13} className="text-amber-600" />
-              <span>Trophy Mall • Lawspet, Pondicherry</span>
+          {/* Interactive Map Embed Column - Direct to Trophy Mall Pondicherry Place ID */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="h-72 sm:h-84 rounded-2xl overflow-hidden border border-zinc-200 shadow-xs relative">
+              <iframe
+                title="Trophy Mall Pondicherry Google Maps Listing"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3903.351659223789!2d79.8266282!3d11.9403051!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5361b97ade1595%3A0x170addcfe6bf616b!2sTrophy%20Mall!5e0!3m2!1sen!2sin!4v1716000000000!5m2!1sen!2sin"
+                className="w-full h-full border-0"
+                allowFullScreen={false}
+                loading="lazy"
+              />
             </div>
+
+            {/* Showroom Photo Gallery Strip */}
+            <div className="bg-white p-3.5 rounded-2xl border border-zinc-200/80">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-700 flex items-center gap-1">
+                  <Sparkles size={12} className="text-amber-600" />
+                  Showroom Collection Highlights
+                </span>
+                <a
+                  href={directMapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-zinc-500 hover:text-zinc-800 underline"
+                >
+                  View 50+ Photos on Google Maps
+                </a>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                {SHOWROOM_GALLERY_IMAGES.map((img, i) => (
+                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200/80">
+                    <Image
+                      src={img.url}
+                      alt={img.caption}
+                      fill
+                      sizes="150px"
+                      className="object-cover hover:scale-105 transition-transform duration-200"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
 
         </div>

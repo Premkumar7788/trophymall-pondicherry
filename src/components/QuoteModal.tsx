@@ -5,11 +5,11 @@ import {
   X, 
   Printer, 
   MessageSquare, 
-  Trophy, 
   Trash2
 } from 'lucide-react';
 import { QuoteItem } from '@/types';
 import { STORE_INFO } from '@/data/catalog';
+import BrandLogo from './BrandLogo';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -75,78 +75,68 @@ export default function QuoteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[95vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-zinc-950/70 backdrop-blur-xs overflow-y-auto">
+      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden my-auto max-h-[95vh] flex flex-col border border-zinc-200">
         
         {/* Top Control Bar (Hidden when printed) */}
-        <div className="no-print flex items-center justify-between px-6 py-4 bg-slate-900 text-white border-b border-slate-800">
+        <div className="no-print flex items-center justify-between px-6 py-3.5 bg-zinc-900 text-white border-b border-zinc-800">
           <div className="flex items-center gap-2">
-            <Trophy size={20} className="text-amber-400" />
-            <h3 className="font-bold text-base sm:text-lg">
-              Official Quotation & Tender Estimate
-            </h3>
+            <BrandLogo size="sm" theme="dark" showSubtitle={false} />
+            <span className="text-zinc-500">|</span>
+            <span className="text-xs font-semibold text-zinc-300">Official Institutional Estimate</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black shadow-md transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-zinc-900 text-xs font-semibold shadow-xs transition-colors hover:bg-zinc-100"
             >
-              <Printer size={15} />
-              <span>Print / Save as PDF</span>
+              <Printer size={13} />
+              <span>Print PDF</span>
             </button>
 
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+              className="p-1 text-zinc-400 hover:text-white rounded-lg transition-colors"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
         </div>
 
         {/* Printable Quotation Content */}
-        <div className="overflow-y-auto p-6 sm:p-10 printable-quote text-slate-900 bg-white">
+        <div className="overflow-y-auto p-6 sm:p-10 printable-quote text-zinc-900 bg-white">
           
-          {/* Letterhead Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-6 border-b-2 border-slate-900 gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500 flex items-center justify-center text-slate-950 shadow-md">
-                <Trophy size={32} className="stroke-[2.2]" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-black tracking-tight text-slate-950">
-                  TROPHY MALL PONDICHERRY
-                </h1>
-                <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
-                  Physical Awards Showroom & Precision Laser Engraving
-                </p>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  76, 1st Floor, Lawspet, Airport Road, Rajaji Nagar, Puducherry - 605008
-                </p>
-              </div>
+          {/* Letterhead Header with Aligned Brand Logo */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-6 border-b-2 border-zinc-900 gap-4">
+            <div className="space-y-1">
+              <BrandLogo size="lg" />
+              <p className="text-[11px] text-zinc-500 mt-2">
+                Physical Awards Showroom & Precision Laser Engraving<br />
+                76, 1st Floor, Lawspet, Airport Road, Rajaji Nagar, Puducherry - 605008
+              </p>
             </div>
 
-            <div className="text-right sm:text-right space-y-1 text-xs">
-              <div className="font-mono font-bold text-slate-800">
-                ESTIMATE REF: <span className="text-amber-600">{quoteRef}</span>
+            <div className="text-left sm:text-right space-y-1 text-xs">
+              <div className="font-mono font-bold text-zinc-800">
+                ESTIMATE REF: <span className="text-amber-700">{quoteRef}</span>
               </div>
-              <div className="text-slate-500">
-                Date: <strong className="text-slate-800">{currentDate}</strong>
+              <div className="text-zinc-500">
+                Date: <strong className="text-zinc-800">{currentDate}</strong>
               </div>
-              <div className="text-slate-500">
+              <div className="text-zinc-500">
                 Validity: <strong>15 Days</strong>
               </div>
-              <div className="text-slate-500">
+              <div className="text-zinc-500">
                 Ph: <strong>{STORE_INFO.phone}</strong>
               </div>
             </div>
           </div>
 
           {/* Customer / Institution Details Form (Interactive inputs in screen view) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 p-4 bg-zinc-50 rounded-2xl border border-zinc-200">
             <div>
-              <span className="text-[10px] font-black uppercase text-slate-400 block mb-1">
+              <span className="text-[10px] font-bold uppercase text-zinc-400 block mb-1">
                 Quotation Issued To:
               </span>
               <input
@@ -154,19 +144,19 @@ export default function QuoteModal({
                 placeholder="College / School / Organization Name"
                 value={customerOrg}
                 onChange={(e) => setCustomerOrg(e.target.value)}
-                className="w-full text-xs sm:text-sm font-bold bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-amber-500"
+                className="w-full text-xs sm:text-sm font-bold bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-zinc-400"
               />
               <input
                 type="text"
                 placeholder="Attn: Principal / Sports Director / Convener"
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
-                className="w-full text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-amber-500 mt-2"
+                className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-zinc-400 mt-2"
               />
             </div>
 
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase text-slate-400 block mb-1">
+              <span className="text-[10px] font-bold uppercase text-zinc-400 block mb-1">
                 Event & Contact Info:
               </span>
               <input
@@ -174,14 +164,14 @@ export default function QuoteModal({
                 placeholder="Contact Phone Number"
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
-                className="w-full text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-amber-500"
+                className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-zinc-400"
               />
               <input
                 type="text"
                 placeholder="Event / Tournament Date (e.g. 15 March 2026)"
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
-                className="w-full text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-amber-500"
+                className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-zinc-400"
               />
             </div>
           </div>
@@ -190,37 +180,37 @@ export default function QuoteModal({
           <div className="overflow-x-auto my-6">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b-2 border-slate-900 bg-slate-100 text-slate-800 font-bold uppercase text-[11px]">
-                  <th className="py-3 px-3">#</th>
-                  <th className="py-3 px-3">Item Description</th>
-                  <th className="py-3 px-3">Height / Specs</th>
-                  <th className="py-3 px-3">Custom Plate Engraving</th>
-                  <th className="py-3 px-3 text-right">Unit Price</th>
-                  <th className="py-3 px-3 text-center">Qty</th>
-                  <th className="py-3 px-3 text-right">Total</th>
-                  {onRemoveItem && <th className="py-3 px-2 no-print text-center"></th>}
+                <tr className="border-b-2 border-zinc-900 bg-zinc-100 text-zinc-800 font-bold uppercase text-[11px]">
+                  <th className="py-2.5 px-3">#</th>
+                  <th className="py-2.5 px-3">Item Description</th>
+                  <th className="py-2.5 px-3">Height / Specs</th>
+                  <th className="py-2.5 px-3">Custom Plate Engraving</th>
+                  <th className="py-2.5 px-3 text-right">Unit Price</th>
+                  <th className="py-2.5 px-3 text-center">Qty</th>
+                  <th className="py-2.5 px-3 text-right">Total</th>
+                  {onRemoveItem && <th className="py-2.5 px-2 no-print text-center"></th>}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-zinc-200">
                 {items.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-8 text-center text-slate-400 italic">
+                    <td colSpan={8} className="py-8 text-center text-zinc-400 italic">
                       No items currently added. Customize any trophy from the catalog to add to this quotation.
                     </td>
                   </tr>
                 ) : (
                   items.map((item, index) => (
-                    <tr key={index} className="hover:bg-slate-50">
-                      <td className="py-3 px-3 font-semibold text-slate-500">{index + 1}</td>
+                    <tr key={index} className="hover:bg-zinc-50">
+                      <td className="py-3 px-3 font-semibold text-zinc-500">{index + 1}</td>
                       <td className="py-3 px-3">
-                        <div className="font-bold text-slate-900">{item.product.name}</div>
-                        <div className="text-[10px] text-slate-500">Material: {item.product.material}</div>
+                        <div className="font-bold text-zinc-900">{item.product.name}</div>
+                        <div className="text-[10px] text-zinc-500">Material: {item.product.material}</div>
                       </td>
-                      <td className="py-3 px-3 font-medium text-slate-700">
+                      <td className="py-3 px-3 font-medium text-zinc-700">
                         {item.customization.selectedHeight}
                       </td>
                       <td className="py-3 px-3">
-                        <div className="text-[11px] font-semibold text-slate-800">
+                        <div className="text-[11px] font-semibold text-zinc-800">
                           {item.customization.line1 || 'Standard Event Plate'}
                         </div>
                         {item.customization.line2 && (
@@ -238,7 +228,7 @@ export default function QuoteModal({
                       <td className="py-3 px-3 text-center font-bold">
                         {item.customization.quantity}
                       </td>
-                      <td className="py-3 px-3 text-right font-black text-slate-900">
+                      <td className="py-3 px-3 text-right font-black text-zinc-900">
                         ₹{item.totalPrice.toLocaleString('en-IN')}
                       </td>
                       {onRemoveItem && (
@@ -248,7 +238,7 @@ export default function QuoteModal({
                             className="text-rose-500 hover:text-rose-700 p-1 rounded"
                             title="Remove"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={13} />
                           </button>
                         </td>
                       )}
@@ -258,14 +248,14 @@ export default function QuoteModal({
               </tbody>
               {items.length > 0 && (
                 <tfoot>
-                  <tr className="border-t-2 border-slate-900 font-bold text-slate-900 bg-slate-50">
+                  <tr className="border-t-2 border-zinc-900 font-bold text-zinc-900 bg-zinc-50">
                     <td colSpan={5} className="py-3 px-3 text-right text-xs uppercase font-black">
                       Total ({totalQuantity} Units):
                     </td>
                     <td className="py-3 px-3 text-center font-black">
                       {totalQuantity}
                     </td>
-                    <td className="py-3 px-3 text-right text-base font-black text-slate-950">
+                    <td className="py-3 px-3 text-right text-base font-black text-zinc-950">
                       ₹{grandTotal.toLocaleString('en-IN')}
                     </td>
                     {onRemoveItem && <td className="no-print"></td>}
@@ -276,9 +266,9 @@ export default function QuoteModal({
           </div>
 
           {/* Terms & Showroom Guarantee */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-6 pt-4 border-t border-slate-200 text-[11px] text-slate-600">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-6 pt-4 border-t border-zinc-200 text-[11px] text-zinc-600">
             <div>
-              <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+              <h4 className="font-bold text-zinc-900 uppercase tracking-wider mb-1.5">
                 Terms & Conditions:
               </h4>
               <ul className="space-y-1 list-disc list-inside">
@@ -290,20 +280,20 @@ export default function QuoteModal({
             </div>
 
             <div className="flex flex-col justify-end items-start sm:items-end text-left sm:text-right pt-6 sm:pt-0">
-              <div className="border-b border-slate-400 w-48 pb-1 text-center font-serif text-slate-500 italic">
+              <div className="border-b border-zinc-400 w-48 pb-1 text-center font-serif text-zinc-500 italic">
                 Authorized Signature
               </div>
-              <span className="font-bold text-slate-900 text-xs mt-1">
+              <span className="font-bold text-zinc-900 text-xs mt-1">
                 For Trophy Mall Pondicherry
               </span>
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-zinc-400">
                 Puducherry - 605008
               </span>
             </div>
           </div>
 
           {/* Bottom Action Bar (Screen Only) */}
-          <div className="no-print flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-slate-200">
+          <div className="no-print flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-zinc-200">
             {onClearAll && items.length > 0 && (
               <button
                 onClick={onClearAll}
@@ -313,21 +303,21 @@ export default function QuoteModal({
               </button>
             )}
 
-            <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="flex items-center gap-2.5 w-full sm:w-auto">
               <button
                 onClick={handlePrint}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-black text-white text-xs font-semibold transition-colors"
               >
-                <Printer size={16} />
+                <Printer size={14} />
                 <span>Print Official PDF</span>
               </button>
 
               <button
                 onClick={handleWhatsAppQuote}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-md shadow-emerald-600/20 transition-colors"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors"
               >
-                <MessageSquare size={16} />
-                <span>Submit Quote to WhatsApp</span>
+                <MessageSquare size={14} />
+                <span>Submit to WhatsApp</span>
               </button>
             </div>
           </div>

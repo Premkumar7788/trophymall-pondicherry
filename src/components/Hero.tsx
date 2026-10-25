@@ -1,16 +1,16 @@
 import React from 'react';
+import Image from 'next/image';
 import { 
   Trophy, 
   MapPin, 
   MessageSquare, 
   Clock, 
-  Sparkles, 
   CheckCircle2, 
   ExternalLink,
   PhoneCall,
-  GraduationCap
+  Sparkles
 } from 'lucide-react';
-import { STORE_INFO, INSTITUTIONS_SERVED } from '@/data/catalog';
+import { STORE_INFO, INSTITUTIONS_SERVED, SHOWROOM_GALLERY_IMAGES } from '@/data/catalog';
 
 interface HeroProps {
   onExploreCatalog: () => void;
@@ -19,201 +19,187 @@ interface HeroProps {
 
 export default function Hero({ onExploreCatalog, onOpenInstitutionalQuote }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white pt-12 pb-20 sm:pt-16 sm:pb-24">
-      {/* Decorative Background Lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-amber-500/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute -top-24 right-0 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none" />
+    <section className="relative bg-zinc-950 text-white pt-10 pb-16 sm:pt-14 sm:pb-20 overflow-hidden border-b border-zinc-800/80">
+      {/* Subtle Minimalist Ambient Background Light */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-80 bg-amber-500/5 blur-[100px] pointer-events-none rounded-full" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        {/* Top Badges */}
+        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-6">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] font-medium text-zinc-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>Physical Showroom in Lawspet</span>
+          </div>
+
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] font-medium text-amber-400">
+            <Clock size={12} />
+            <span>24h Express Laser Engraving</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
           {/* Main Hero Copy Column */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            {/* Location & Express Badge */}
-            <div className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 bg-slate-800/80 border border-slate-700/80 rounded-full px-4 py-1.5 shadow-inner">
-              <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400">
-                <MapPin size={14} className="text-amber-400" />
-                Lawspet, Pondicherry
-              </span>
-              <span className="text-slate-500">•</span>
-              <span className="flex items-center gap-1 text-xs font-semibold text-emerald-400">
-                <Clock size={13} /> 24-Hour Urgent Turnaround Available
-              </span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15]">
-              Pondicherry’s Premier{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500">
-                Trophies, Awards & Medals
-              </span>{' '}
-              Showroom
+          <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
+            
+            {/* Minimalist Crisp Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-white leading-[1.12]">
+              Trophies, Awards & Medals{' '}
+              <span className="text-amber-400 font-extrabold">Showroom</span>{' '}
+              in Pondicherry
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-              Step into our physical showroom on <strong className="text-white font-semibold">Airport Road, Lawspet</strong> to explore 500+ ready samples. Enjoy <span className="text-amber-300 font-medium">Free Laser Plate Engraving</span>, real-time WhatsApp design proofs, and unbeatable institutional bulk discounts.
+            {/* Clean Subtitle */}
+            <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              Explore 500+ display samples at our physical showroom on <strong className="text-zinc-200 font-semibold">Airport Road, Lawspet</strong>. Free laser-engraved metal plates, WhatsApp design proof approval, and bulk institutional pricing.
             </p>
 
-            {/* Value Highlights */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm text-slate-300">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 size={16} className="text-amber-400 shrink-0" />
-                <span>Zero Engraving Plate Fee</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 size={16} className="text-amber-400 shrink-0" />
-                <span>Instant WhatsApp Mockup</span>
-              </div>
-              <div className="flex items-center gap-2 col-span-2 sm:col-span-1">
-                <CheckCircle2 size={16} className="text-amber-400 shrink-0" />
-                <span>Showroom Click & Collect</span>
-              </div>
+            {/* Subtle Feature List */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-5 text-xs text-zinc-400 pt-1">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 size={14} className="text-amber-400" /> Free Custom Plate Engraving
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 size={14} className="text-amber-400" /> WhatsApp Proof Before Delivery
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 size={14} className="text-amber-400" /> Showroom Click & Collect
+              </span>
             </div>
 
-            {/* Primary Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-4">
+            {/* Minimalist Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-3">
               <button
                 onClick={onExploreCatalog}
-                className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-7 py-4 rounded-2xl shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.02] flex items-center justify-center gap-2.5 text-base"
+                className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-sm"
               >
-                <Trophy size={20} className="stroke-[2.5]" />
-                <span>Explore Showroom Catalog</span>
+                <Trophy size={16} />
+                <span>Explore Catalog</span>
               </button>
 
               <a
-                href={`https://wa.me/${STORE_INFO.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20request%20a%20custom%20trophy%20quote%20and%20design%20mockup.`}
+                href={`https://wa.me/${STORE_INFO.whatsapp}?text=Hello%20Trophy%20Mall%20Pondicherry!%20I%20would%20like%20to%20request%20a%20custom%20trophy%20quote.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-7 py-4 rounded-2xl shadow-xl shadow-emerald-600/25 transition-all hover:scale-[1.02] flex items-center justify-center gap-2.5 text-base"
+                className="w-full sm:w-auto bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700/80 font-medium px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
               >
-                <MessageSquare size={20} />
-                <span>WhatsApp Instant Quote</span>
+                <MessageSquare size={16} className="text-emerald-400" />
+                <span>WhatsApp Quote</span>
               </a>
 
               <a
                 href={STORE_INFO.mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-semibold px-5 py-4 rounded-2xl border border-slate-700 transition-all flex items-center justify-center gap-2 text-sm"
+                className="w-full sm:w-auto text-zinc-400 hover:text-white px-4 py-3.5 rounded-xl transition-colors flex items-center justify-center gap-1.5 text-xs font-medium"
               >
-                <MapPin size={17} className="text-amber-400" />
-                <span>Store Location</span>
-                <ExternalLink size={13} className="text-slate-400" />
+                <MapPin size={14} className="text-amber-400" />
+                <span>Directions</span>
+                <ExternalLink size={11} className="text-zinc-500" />
               </a>
             </div>
 
-            {/* Local Phone Quick Dial */}
-            <div className="pt-2 flex items-center justify-center lg:justify-start gap-4 text-xs text-slate-400">
-              <span className="flex items-center gap-1.5">
-                <PhoneCall size={14} className="text-amber-400" />
-                Call Showroom: <a href={`tel:${STORE_INFO.phone}`} className="text-white font-semibold hover:underline">{STORE_INFO.phone}</a>
+            {/* Direct Phone Dial */}
+            <div className="pt-1 flex items-center justify-center lg:justify-start gap-3 text-xs text-zinc-500">
+              <span className="flex items-center gap-1">
+                <PhoneCall size={13} className="text-amber-400" />
+                Showroom: <a href={`tel:${STORE_INFO.phone}`} className="text-zinc-300 font-medium hover:underline">{STORE_INFO.phone}</a>
               </span>
               <span>•</span>
-              <span>Daily 10:00 AM – 9:00 PM</span>
+              <span>Mon – Sat: 10AM – 9PM</span>
             </div>
+
           </div>
 
-          {/* Visual Interactive Showcase Card */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-700/80 rounded-3xl p-6 sm:p-7 shadow-2xl backdrop-blur-xl">
+          {/* Right Column: Real Showroom Photos Showcase */}
+          <div className="lg:col-span-5">
+            <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 shadow-xl">
               
-              {/* Badge Over Card */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-700/60 mb-5">
+              <div className="flex items-center justify-between pb-3 border-b border-zinc-800 mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 bg-amber-500/10 rounded-xl text-amber-400 border border-amber-500/20">
-                    <Sparkles size={18} />
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400">
+                    <Sparkles size={16} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white">Direct Showroom Experience</h3>
-                    <p className="text-[11px] text-slate-400">Puducherry Local Store Advantage</p>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                      Showroom Gallery
+                    </h3>
+                    <p className="text-[10px] text-zinc-400">
+                      Actual Showroom & Award Collections
+                    </p>
                   </div>
                 </div>
-                <span className="bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20">
-                  Ready in Showroom
-                </span>
+
+                <a
+                  href={STORE_INFO.mapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-amber-400 hover:underline flex items-center gap-1 font-semibold"
+                >
+                  <span>Google Maps Photos</span>
+                  <ExternalLink size={10} />
+                </a>
               </div>
 
-              {/* Sample Engraving Plaque Mockup */}
-              <div className="bg-gradient-to-r from-amber-200 via-amber-100 to-amber-200 text-slate-900 rounded-2xl p-5 shadow-lg border border-amber-300 relative overflow-hidden mb-5">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-white/30 rounded-full blur-xl pointer-events-none" />
-                
-                <div className="flex items-center justify-between mb-3 border-b border-amber-300/80 pb-2">
-                  <div className="flex items-center gap-2">
-                    <Trophy size={18} className="text-amber-800" />
-                    <span className="text-[11px] font-extrabold tracking-widest uppercase text-amber-950">
-                      LASER ENGRAVED PROOF
-                    </span>
+              {/* 4-Photo Minimalist Grid from Google Maps & Showroom */}
+              <div className="grid grid-cols-2 gap-2.5">
+                {SHOWROOM_GALLERY_IMAGES.map((item, idx) => (
+                  <div 
+                    key={idx}
+                    className="group relative aspect-square rounded-xl overflow-hidden bg-zinc-800 border border-zinc-700/60"
+                  >
+                    <Image
+                      src={item.url}
+                      alt={item.caption}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 200px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent flex items-end p-2">
+                      <span className="text-[10px] font-medium text-zinc-200 truncate">
+                        {item.category}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[10px] font-bold bg-amber-950 text-amber-200 px-2 py-0.5 rounded">
-                    FREE
-                  </span>
-                </div>
-
-                <div className="text-center py-2 space-y-1">
-                  <div className="text-xs font-black tracking-wide text-slate-900 uppercase">
-                    PONDICHERRY SPORTS LEAGUE 2026
-                  </div>
-                  <div className="text-base font-black text-amber-900 tracking-tight">
-                    CHAMPIONS OF THE TOURNAMENT
-                  </div>
-                  <div className="text-xs font-bold text-slate-700 italic">
-                    Awarded to: SMVEC Premier XI
-                  </div>
-                </div>
-
-                <div className="mt-2 pt-2 border-t border-amber-300/80 flex items-center justify-between text-[10px] text-amber-950 font-semibold">
-                  <span>Showroom Laser Unit #1</span>
-                  <span>Zero Plate Cost</span>
-                </div>
+                ))}
               </div>
 
-              {/* Store Guarantee Checklist */}
-              <div className="space-y-2.5 text-xs text-slate-300 mb-5">
-                <div className="flex items-center justify-between py-1 border-b border-slate-800">
-                  <span className="text-slate-400">Showroom Address:</span>
-                  <span className="text-white font-medium text-right text-[11px]">76, 1st Flr, Lawspet, Pondicherry</span>
+              {/* Plaque Proof Preview Pill */}
+              <div className="mt-3 p-3 bg-zinc-950/70 border border-zinc-800 rounded-xl flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2 text-zinc-300 text-[11px]">
+                  <Trophy size={14} className="text-amber-400 shrink-0" />
+                  <span>Free Laser Engraved Proof with every award</span>
                 </div>
-                <div className="flex items-center justify-between py-1 border-b border-slate-800">
-                  <span className="text-slate-400">Custom Proof Approval:</span>
-                  <span className="text-emerald-400 font-semibold">Within 15 Mins on WhatsApp</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-slate-800">
-                  <span className="text-slate-400">Institutional Purchase:</span>
-                  <span className="text-amber-400 font-semibold">Official GST Estimates Provided</span>
-                </div>
+                <button
+                  onClick={onOpenInstitutionalQuote}
+                  className="text-[10px] text-amber-400 hover:text-amber-300 font-bold uppercase tracking-wider underline underline-offset-2"
+                >
+                  Get Estimate
+                </button>
               </div>
 
-              {/* Secondary Instant Action */}
-              <button
-                onClick={onOpenInstitutionalQuote}
-                className="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-bold text-amber-300 flex items-center justify-center gap-2 transition-colors"
-              >
-                <GraduationCap size={16} />
-                Generate Institutional Tender Estimate (PDF / Print)
-              </button>
             </div>
           </div>
+
         </div>
 
-        {/* Local Institutions Trust Strip */}
-        <div className="mt-16 pt-8 border-t border-slate-800/80" id="institutions">
-          <div className="text-center mb-4">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
-              Trusted by Premier Institutions & Tournaments in Pondicherry & Tamil Nadu
+        {/* Minimalist Local Institutions Strip */}
+        <div className="mt-12 pt-6 border-t border-zinc-800/60" id="institutions">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-400">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
+              Trusted in Pondicherry:
             </span>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-slate-300">
-            {INSTITUTIONS_SERVED.map((item, index) => (
-              <div 
-                key={index} 
-                className="px-3.5 py-1.5 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2 font-medium"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                <span>{item.name}</span>
-              </div>
-            ))}
+            <div className="flex flex-wrap items-center justify-center gap-2 text-[11px]">
+              {INSTITUTIONS_SERVED.slice(0, 5).map((inst, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300"
+                >
+                  {inst.name}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 

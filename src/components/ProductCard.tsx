@@ -4,8 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import { 
   Clock, 
-  Flame, 
-  Sparkles, 
   ArrowRight, 
   MessageSquare,
   Check
@@ -43,108 +41,109 @@ export default function ProductCard({ product, onCustomize }: ProductCardProps) 
   return (
     <div 
       onClick={() => onCustomize(product)}
-      className="group bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden cursor-pointer hover:border-amber-400 relative"
+      className="group bg-white rounded-2xl border border-zinc-200/80 hover:border-zinc-400/90 transition-all duration-200 flex flex-col overflow-hidden cursor-pointer relative hover:shadow-md"
     >
-      {/* Top Image Container */}
-      <div className="relative aspect-[4/3] bg-gradient-to-tr from-slate-100 to-amber-50/40 overflow-hidden flex items-center justify-center p-4">
-        {/* Badges Overlay */}
-        <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 items-start">
+      {/* Top Image Container with generous padding & clean background */}
+      <div className="relative aspect-square bg-zinc-50 overflow-hidden flex items-center justify-center p-4 border-b border-zinc-100">
+        
+        {/* Subtle Minimalist Badges */}
+        <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start">
           {product.isBestseller && (
-            <span className="inline-flex items-center gap-1 bg-amber-500 text-slate-950 font-black text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
-              <Flame size={12} className="fill-slate-950" /> Bestseller
+            <span className="bg-zinc-900 text-white font-semibold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md">
+              Bestseller
             </span>
           )}
           {product.isExpress24h && (
-            <span className="inline-flex items-center gap-1 bg-emerald-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full shadow-sm">
-              <Clock size={11} /> 24h Express Engraving
+            <span className="bg-emerald-50 text-emerald-700 border border-emerald-200/80 font-medium text-[9px] px-2 py-0.5 rounded-md flex items-center gap-1">
+              <Clock size={10} /> 24h Express
             </span>
           )}
         </div>
 
-        <div className="absolute top-3 right-3 z-10">
-          <span className="bg-slate-900/80 backdrop-blur-md text-slate-200 font-semibold text-[10px] px-2.5 py-1 rounded-lg border border-slate-700/60">
+        <div className="absolute top-2.5 right-2.5 z-10">
+          <span className="bg-white/90 backdrop-blur-xs text-zinc-600 font-medium text-[10px] px-2 py-0.5 rounded-md border border-zinc-200/80 shadow-xs">
             {product.material}
           </span>
         </div>
 
         {/* Product Image */}
-        <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-500">
+        <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-300">
           <Image
             src={product.images[0]}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover rounded-xl"
+            className="object-contain p-2"
           />
         </div>
 
-        {/* Height Pill at Bottom of Image */}
-        <div className="absolute bottom-3 left-3 z-10">
-          <span className="bg-white/90 backdrop-blur-md text-slate-800 text-[11px] font-bold px-2 py-0.5 rounded-md border border-slate-200 shadow-sm">
-            Height: {product.heightInches}
+        {/* Height tag */}
+        <div className="absolute bottom-2.5 left-2.5 z-10">
+          <span className="bg-white/95 text-zinc-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-zinc-200 shadow-xs">
+            {product.heightInches}
           </span>
         </div>
       </div>
 
       {/* Product Content */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
+      <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-bold text-slate-900 text-base group-hover:text-amber-600 transition-colors line-clamp-2 leading-snug">
+          <h3 className="font-bold text-zinc-900 text-sm group-hover:text-amber-700 transition-colors line-clamp-1 leading-snug">
             {product.name}
           </h3>
 
-          <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+          <p className="text-[11px] text-zinc-500 mt-1 line-clamp-2 leading-relaxed">
             {product.description}
           </p>
         </div>
 
-        <div className="mt-4 pt-3 border-t border-slate-100 space-y-3">
+        <div className="mt-3 pt-3 border-t border-zinc-100 space-y-2.5">
           {/* Price & Discount */}
           <div className="flex items-baseline justify-between">
-            <div className="flex items-baseline gap-2">
-              <span className="text-xl font-black text-slate-900">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-base font-extrabold text-zinc-900">
                 ₹{product.basePrice.toLocaleString('en-IN')}
               </span>
-              <span className="text-xs text-slate-400 line-through">
+              <span className="text-[11px] text-zinc-400 line-through">
                 ₹{product.mrp.toLocaleString('en-IN')}
               </span>
             </div>
 
-            <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
+            <span className="text-[10px] font-semibold text-zinc-600 bg-zinc-100 px-1.5 py-0.5 rounded">
               {discountPercent}% OFF
             </span>
           </div>
 
           {/* Bulk Tier Notification */}
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-700 bg-amber-50/70 px-2.5 py-1 rounded-lg border border-amber-200/60">
-            <Sparkles size={12} className="text-amber-600 shrink-0" />
-            <span>Save up to {maxBulkDiscount}% on School/Club Bulk</span>
+          <div className="text-[10px] text-amber-800 bg-amber-50/60 px-2 py-1 rounded-md border border-amber-200/50 flex items-center justify-between font-medium">
+            <span>Bulk Savings:</span>
+            <span className="font-bold">Up to {maxBulkDiscount}% off</span>
           </div>
 
           {/* Free Engraving Label */}
-          <div className="flex items-center justify-between text-[11px] text-slate-500">
+          <div className="flex items-center justify-between text-[10px] text-zinc-500">
             <span className="flex items-center gap-1">
-              <Check size={12} className="text-emerald-600 font-bold" /> Free Custom Engraving
+              <Check size={11} className="text-emerald-600 font-bold" /> Free Laser Engraving
             </span>
-            <span className="text-[10px] text-slate-400">Pondicherry Pickup</span>
+            <span>Lawspet Store</span>
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-5 gap-2 pt-1">
+          <div className="grid grid-cols-5 gap-1.5 pt-0.5">
             <button
               onClick={() => onCustomize(product)}
-              className="col-span-4 bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition-colors flex items-center justify-center gap-1.5 group-hover:bg-amber-500 group-hover:text-slate-950"
+              className="col-span-4 bg-zinc-900 hover:bg-black text-white font-medium py-2 px-3 rounded-xl text-xs transition-colors flex items-center justify-center gap-1.5"
             >
-              <span>Customize & Order</span>
-              <ArrowRight size={14} />
+              <span>Customize</span>
+              <ArrowRight size={13} />
             </button>
 
             <button
               onClick={handleQuickWhatsApp}
-              className="col-span-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center transition-colors border border-emerald-200"
+              className="col-span-1 bg-zinc-100 hover:bg-emerald-50 hover:text-emerald-700 text-zinc-700 rounded-xl flex items-center justify-center transition-colors border border-zinc-200/80"
               title="Quick WhatsApp Inquiry"
             >
-              <MessageSquare size={16} />
+              <MessageSquare size={14} />
             </button>
           </div>
         </div>

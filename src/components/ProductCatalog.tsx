@@ -80,31 +80,31 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
   };
 
   return (
-    <section className="py-16 bg-slate-50/60" id="catalog">
+    <section className="py-14 bg-zinc-50/50" id="catalog">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        {/* Section Heading - Minimalist */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100/70 px-3 py-1 rounded-full mb-2">
-              <Trophy size={14} className="text-amber-600" />
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">
+              <Trophy size={13} className="text-amber-600" />
               <span>Showroom Inventory</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">
               Trophy & Awards Catalog
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Select any design to customize heights, enter laser plate engraving, or view bulk tier discounts.
+            <p className="text-xs text-zinc-500 mt-1">
+              Select any design to view customization options, free laser plate proofs, or bulk tier pricing.
             </p>
           </div>
 
-          <div className="text-xs text-slate-500">
-            Showing <strong className="text-slate-900">{filteredProducts.length}</strong> awards in stock
+          <div className="text-xs text-zinc-500">
+            Showing <strong className="text-zinc-900 font-semibold">{filteredProducts.length}</strong> items in showroom
           </div>
         </div>
 
         {/* Category Tabs */}
-        <div className="mb-6">
+        <div className="mb-5">
           <CategoryTabs
             activeCategory={activeCategory}
             onSelectCategory={setActiveCategory}
@@ -112,23 +112,23 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
           />
         </div>
 
-        {/* Search, Material Filter & Sort Bar */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-sm mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        {/* Search, Material Filter & Sort Bar - Minimalist */}
+        <div className="bg-white p-3 rounded-2xl border border-zinc-200/80 shadow-xs mb-7 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           
           {/* Search Field */}
           <div className="relative flex-1">
-            <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               type="text"
               placeholder="Search cricket, football, acrylic, medals, wooden crests..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-amber-500 transition-colors"
+              className="w-full bg-zinc-50 border border-zinc-200/90 rounded-xl pl-9 pr-4 py-2 text-xs text-zinc-800 placeholder-zinc-400 outline-none focus:border-zinc-400 transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-700"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 hover:text-zinc-700"
               >
                 Clear
               </button>
@@ -136,16 +136,16 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
           </div>
 
           {/* Material & Sort Controls */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
             {/* Material dropdown */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 flex items-center gap-1 whitespace-nowrap">
-                <Layers size={14} className="text-amber-600" /> Material:
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-medium text-zinc-500 flex items-center gap-1 whitespace-nowrap">
+                <Layers size={13} className="text-zinc-400" /> Material:
               </span>
               <select
                 value={selectedMaterial}
                 onChange={(e) => setSelectedMaterial(e.target.value)}
-                className="text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 outline-none focus:border-amber-500"
+                className="text-xs bg-zinc-50 border border-zinc-200/90 rounded-xl px-2.5 py-1.5 text-zinc-700 outline-none focus:border-zinc-400 font-medium"
               >
                 <option value="all">All Materials</option>
                 <option value="Metal">Metal / Brass</option>
@@ -157,14 +157,14 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
             </div>
 
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 flex items-center gap-1 whitespace-nowrap">
-                <ArrowUpDown size={14} className="text-amber-600" /> Sort:
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-medium text-zinc-500 flex items-center gap-1 whitespace-nowrap">
+                <ArrowUpDown size={13} className="text-zinc-400" /> Sort:
               </span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'featured' | 'price-asc' | 'price-desc')}
-                className="text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 outline-none focus:border-amber-500"
+                className="text-xs bg-zinc-50 border border-zinc-200/90 rounded-xl px-2.5 py-1.5 text-zinc-700 outline-none focus:border-zinc-400 font-medium"
               >
                 <option value="featured">Featured & Bestsellers</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -176,10 +176,10 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
             {(activeCategory !== 'all' || selectedMaterial !== 'all' || searchQuery) && (
               <button
                 onClick={handleResetFilters}
-                className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors whitespace-nowrap"
                 title="Reset all filters"
               >
-                <RotateCcw size={13} />
+                <RotateCcw size={12} />
                 <span>Reset</span>
               </button>
             )}
@@ -189,7 +189,7 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
 
         {/* Product Cards Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -199,22 +199,22 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center max-w-md mx-auto space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
-              <Search size={28} />
+          <div className="bg-white rounded-2xl border border-zinc-200/80 p-10 text-center max-w-sm mx-auto space-y-3">
+            <div className="w-12 h-12 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center mx-auto">
+              <Search size={22} />
             </div>
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-sm font-bold text-zinc-900">
               No matching awards found
             </h3>
-            <p className="text-xs text-slate-500">
-              We have over 500+ physical samples in our Lawspet showroom. If you don&apos;t see what you need, message us directly for custom designs.
+            <p className="text-xs text-zinc-500">
+              We have 500+ physical samples in our Lawspet showroom. If you don&apos;t see what you need, message us directly for custom designs.
             </p>
-            <div className="pt-2 flex justify-center gap-3">
+            <div className="pt-1 flex justify-center">
               <button
                 onClick={handleResetFilters}
-                className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800"
+                className="px-3.5 py-1.5 bg-zinc-900 text-white rounded-xl text-xs font-semibold hover:bg-black"
               >
-                Reset All Filters
+                Reset Filters
               </button>
             </div>
           </div>

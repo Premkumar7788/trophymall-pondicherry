@@ -45,7 +45,7 @@ export default function InstitutionalTenderForm() {
     setSubmitted(true);
     setIsSubmitting(false);
 
-    // Also offer direct WhatsApp routing
+    // Direct WhatsApp routing
     const text =
       `*TROPHY MALL PONDICHERRY - BULK INSTITUTIONAL INQUIRY*%0A%0A` +
       `🏫 *Institution:* ${orgName}%0A` +
@@ -61,80 +61,79 @@ export default function InstitutionalTenderForm() {
   };
 
   return (
-    <section className="py-16 bg-white border-t border-slate-200" id="institutional-tender">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-14 bg-zinc-50/60 border-t border-zinc-200/80" id="institutional-tender">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-6 sm:p-12 shadow-2xl relative overflow-hidden border border-slate-800">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="max-w-2xl mx-auto text-center mb-8">
-            <span className="text-[11px] font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
-              Colleges • Schools • Sports Leagues • Corporates
+        <div className="bg-zinc-950 text-white rounded-3xl p-6 sm:p-10 shadow-lg border border-zinc-800">
+          
+          <div className="max-w-xl mx-auto text-center mb-7">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800">
+              Institutional Estimates
             </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              Request an Institutional Tender Estimate
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2.5">
+              Request a Bulk Tender Quote
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 mt-2">
-              Preparing for an Annual Sports Day, University Tournament, or Corporate Award Night? Get formal GST estimates, bulk price slabs, and sample showroom inspection.
+            <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+              Official GST quotes, bulk discount tiers, and physical sample showroom inspection for Pondicherry schools, colleges, and sports bodies.
             </p>
           </div>
 
           {submitted ? (
-            <div className="bg-emerald-950/60 border border-emerald-500/40 rounded-2xl p-8 text-center space-y-4 max-w-lg mx-auto">
-              <div className="w-14 h-14 bg-emerald-500 text-slate-950 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/30">
-                <CheckCircle2 size={32} />
+            <div className="bg-zinc-900 border border-zinc-700/80 rounded-2xl p-6 text-center space-y-3 max-w-md mx-auto">
+              <div className="w-12 h-12 bg-emerald-500 text-zinc-950 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle2 size={26} />
               </div>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-base font-bold text-white">
                 Inquiry Successfully Logged!
               </h3>
-              <p className="text-xs text-emerald-200">
+              <p className="text-xs text-zinc-400">
                 Our Lawspet showroom manager will review your specs and dispatch a customized tender quote and WhatsApp proof.
               </p>
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   type="button"
                   onClick={() => setSubmitted(false)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200"
+                  className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-200"
                 >
                   Submit Another Inquiry
                 </button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl mx-auto">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5 max-w-xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
                     Institution / School / Club Name *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g., SMVEC / Pondicherry University / City School"
+                    placeholder="e.g., SMVEC / Pondicherry University"
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white placeholder-zinc-600 outline-none focus:border-zinc-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
                     Contact Person Name & Title *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g., Physical Director / Principal / Convener"
+                    placeholder="e.g., Physical Director / Principal"
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white placeholder-zinc-600 outline-none focus:border-zinc-500"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
                     Mobile / WhatsApp Phone Number *
                   </label>
                   <input
@@ -143,50 +142,50 @@ export default function InstitutionalTenderForm() {
                     placeholder="e.g., 98765 43210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white placeholder-zinc-600 outline-none focus:border-zinc-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
-                    Official Email (For GST Quote PDF)
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
+                    Official Email (Optional)
                   </label>
                   <input
                     type="email"
                     placeholder="e.g., sports@institution.edu.in"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white placeholder-zinc-600 outline-none focus:border-zinc-500"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
                     Award Category
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-white outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-2.5 py-2 text-white outline-none focus:border-zinc-500"
                   >
                     <option value="Annual Sports Day Medals & Cups">Sports Day Medals & Cups</option>
-                    <option value="Cricket / Football Tournament Trophies">Cricket / Football League Trophies</option>
-                    <option value="Corporate & Acrylic Plaques">Corporate / Academic Plaques</option>
+                    <option value="Cricket / Football Tournament Trophies">Cricket / Football Trophies</option>
+                    <option value="Corporate & Acrylic Plaques">Corporate & Academic Plaques</option>
                     <option value="Chief Guest Mementos & Crests">Chief Guest Mementos</option>
-                    <option value="Mega Rolling Championship Cups">Mega Rolling Championship Cups</option>
+                    <option value="Mega Rolling Championship Cups">Big Rolling Cups</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
                     Estimated Quantity
                   </label>
                   <select
                     value={estQty}
                     onChange={(e) => setEstQty(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-white outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-2.5 py-2 text-white outline-none focus:border-zinc-500"
                   >
                     <option value="10 - 25 pcs">10 – 25 pcs</option>
                     <option value="25 - 50 pcs">25 – 50 pcs</option>
@@ -197,48 +196,48 @@ export default function InstitutionalTenderForm() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
                     Target Event Date
                   </label>
                   <input
                     type="date"
                     value={eventDate}
                     onChange={(e) => setEventDate(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-white outline-none focus:border-amber-400"
+                    className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-2.5 py-2 text-white outline-none focus:border-zinc-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
-                  Specific Requirements or Budget Target
+                <label className="text-[11px] font-semibold text-zinc-400 block mb-1">
+                  Specific Requirements or Budget Note
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="e.g., Need 150 gold medals with custom school ribbon + 15 runner/winner trophies. Budget ~₹25,000."
+                  placeholder="e.g., Need 150 gold medals with custom school ribbon + 15 runner/winner trophies."
                   value={requirements}
                   onChange={(e) => setRequirements(e.target.value)}
-                  className="w-full text-xs sm:text-sm bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 outline-none focus:border-amber-400"
+                  className="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white placeholder-zinc-600 outline-none focus:border-zinc-500"
                 />
               </div>
 
-              <div className="pt-2">
+              <div className="pt-1.5">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-4 px-6 rounded-2xl shadow-xl shadow-amber-500/25 transition-all text-sm sm:text-base flex items-center justify-center gap-2"
+                  className="w-full bg-white hover:bg-zinc-200 text-zinc-950 font-bold py-3 px-5 rounded-xl transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2"
                 >
-                  <MessageSquare size={18} />
+                  <MessageSquare size={15} />
                   <span>Submit & Route to WhatsApp Manager</span>
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-6 pt-2 text-[11px] text-slate-400">
+              <div className="flex items-center justify-center gap-4 pt-1 text-[10px] text-zinc-500">
                 <span className="flex items-center gap-1">
-                  <ShieldCheck size={13} className="text-emerald-400" /> Free Sample Showroom Inspection
+                  <ShieldCheck size={12} className="text-emerald-400" /> Free Sample Inspection
                 </span>
                 <span className="flex items-center gap-1">
-                  <Clock size={13} className="text-amber-400" /> 1-Hour Estimate Turnaround
+                  <Clock size={12} className="text-amber-400" /> 1-Hour Estimate Turnaround
                 </span>
               </div>
             </form>

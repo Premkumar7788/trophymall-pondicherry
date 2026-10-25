@@ -45,8 +45,8 @@ export default function CategoryTabs({
   };
 
   return (
-    <div className="overflow-x-auto pb-2 scrollbar-none">
-      <div className="flex items-center gap-2.5 min-w-max p-1">
+    <div className="overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex items-center gap-2 min-w-max p-0.5">
         {CATEGORIES.map((category) => {
           const Icon = getIcon(category.iconName);
           const isActive = activeCategory === category.slug;
@@ -56,19 +56,19 @@ export default function CategoryTabs({
             <button
               key={category.id}
               onClick={() => onSelectCategory(category.slug)}
-              className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
                 isActive
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25 scale-[1.02]'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200/80 hover:border-slate-300'
+                  ? 'bg-zinc-900 text-white shadow-xs'
+                  : 'bg-white text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 border border-zinc-200/90'
               }`}
             >
-              <Icon size={16} className={isActive ? 'text-slate-950' : 'text-amber-600'} />
+              <Icon size={14} className={isActive ? 'text-amber-400' : 'text-zinc-500'} />
               <span>{category.name}</span>
               <span
-                className={`text-[11px] px-2 py-0.5 rounded-full font-black ${
+                className={`text-[10px] px-1.5 py-0.2 rounded-md font-bold ${
                   isActive
-                    ? 'bg-slate-950 text-amber-300'
-                    : 'bg-slate-100 text-slate-600'
+                    ? 'bg-zinc-800 text-zinc-300'
+                    : 'bg-zinc-100 text-zinc-500'
                 }`}
               >
                 {count}

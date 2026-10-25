@@ -18,6 +18,7 @@ import {
 import { Product, CustomizationDetails } from '@/types';
 import { STORE_INFO } from '@/data/catalog';
 import { submitOrderInquiry } from '@/lib/supabase';
+import BrandLogo from './BrandLogo';
 
 interface ProductCustomizerModalProps {
   product: Product | null;
@@ -172,143 +173,131 @@ export default function ProductCustomizerModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-sm overflow-y-auto no-print">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-auto max-h-[92vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-zinc-950/70 backdrop-blur-xs overflow-y-auto no-print">
+      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-xl border border-zinc-200 overflow-hidden my-auto max-h-[92vh] flex flex-col">
         
-        {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
-          <div className="flex items-center gap-2">
-            <span className="p-2 bg-amber-500/10 text-amber-600 rounded-xl">
-              <Sparkles size={18} />
-            </span>
-            <div>
-              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg">
-                Custom Trophy Configurator
-              </h3>
-              <p className="text-xs text-slate-500">
-                Trophy Mall Pondicherry • Free Laser Proof Included
-              </p>
-            </div>
+        {/* Modal Header with Aligned Brand Logo */}
+        <div className="flex items-center justify-between px-6 py-3.5 border-b border-zinc-200/80 bg-zinc-50/70">
+          <div className="flex items-center gap-3">
+            <BrandLogo size="sm" />
+            <span className="text-zinc-300">|</span>
+            <span className="text-xs font-semibold text-zinc-600">Custom Engraving Configurator</span>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-200/60 transition-colors"
+            className="p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg hover:bg-zinc-200/60 transition-colors"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
         {/* Modal Body */}
         <div className="overflow-y-auto p-4 sm:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">
             
             {/* Left Column: Product Visuals & Live Plaque Simulator */}
-            <div className="lg:col-span-5 space-y-5">
+            <div className="lg:col-span-5 space-y-4">
               {/* Product Picture */}
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-inner flex items-center justify-center">
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 border border-zinc-200 flex items-center justify-center p-4">
                 <Image
                   src={product.images[0]}
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 350px"
-                  className="object-cover"
+                  className="object-contain p-2"
                 />
-                <div className="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-md text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-md z-10">
+                <div className="absolute top-2.5 left-2.5 bg-zinc-900/90 text-zinc-200 text-[10px] font-semibold px-2 py-0.5 rounded-md z-10">
                   {selectedHeight}
                 </div>
               </div>
 
-              {/* LIVE BRUSHED BRASS PLAQUE SIMULATOR */}
+              {/* LIVE BRUSHED BRASS PLAQUE SIMULATOR - Minimalist & Crisp */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                <div className="flex items-center justify-between text-xs font-semibold text-zinc-700">
                   <span className="flex items-center gap-1.5">
-                    <Sparkles size={14} className="text-amber-500" />
-                    Live Laser Engraving Plaque Preview
+                    <Sparkles size={13} className="text-amber-600" />
+                    Laser Engraved Plaque Preview
                   </span>
-                  <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">
-                    Free Included
+                  <span className="text-[10px] text-zinc-600 font-medium bg-zinc-100 px-2 py-0.5 rounded">
+                    Included Free
                   </span>
                 </div>
 
-                <div className="bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-200 border-2 border-amber-300 rounded-xl p-4 shadow-md text-slate-950 relative overflow-hidden flex flex-col items-center justify-center min-h-[140px] text-center">
-                  {/* Screws on Plaque Corners */}
-                  <div className="absolute top-1.5 left-1.5 w-2 h-2 rounded-full border border-amber-500 bg-amber-300 shadow-inner" />
-                  <div className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border border-amber-500 bg-amber-300 shadow-inner" />
-                  <div className="absolute bottom-1.5 left-1.5 w-2 h-2 rounded-full border border-amber-500 bg-amber-300 shadow-inner" />
-                  <div className="absolute bottom-1.5 right-1.5 w-2 h-2 rounded-full border border-amber-500 bg-amber-300 shadow-inner" />
+                <div className="bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 border border-amber-300/80 rounded-xl p-4 text-zinc-950 relative overflow-hidden flex flex-col items-center justify-center min-h-[130px] text-center shadow-xs">
+                  {/* Plaque Corner Screws */}
+                  <div className="absolute top-1.5 left-1.5 w-1.5 h-1.5 rounded-full border border-amber-400 bg-amber-200" />
+                  <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full border border-amber-400 bg-amber-200" />
+                  <div className="absolute bottom-1.5 left-1.5 w-1.5 h-1.5 rounded-full border border-amber-400 bg-amber-200" />
+                  <div className="absolute bottom-1.5 right-1.5 w-1.5 h-1.5 rounded-full border border-amber-400 bg-amber-200" />
 
                   {/* Logo on Plaque */}
                   {logoPreview ? (
-                    <div className="mb-2 max-h-10 max-w-[80px]">
+                    <div className="mb-1.5 max-h-9 max-w-[70px]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={logoPreview}
                         alt="Logo Preview"
-                        className="max-h-10 max-w-[80px] object-contain filter grayscale contrast-200"
+                        className="max-h-9 max-w-[70px] object-contain filter grayscale contrast-200"
                       />
                     </div>
                   ) : (
-                    <div className="text-[9px] font-semibold tracking-wider text-amber-800/60 uppercase mb-1">
-                      {organizationName || 'Pondicherry Institutional Awards'}
+                    <div className="text-[8px] font-semibold tracking-wider text-amber-900/60 uppercase mb-1">
+                      {organizationName || 'Trophy Mall Pondicherry'}
                     </div>
                   )}
 
                   {/* Text Line 1 */}
-                  <div className="text-xs font-black tracking-wider uppercase text-slate-950 max-w-full truncate px-2">
+                  <div className="text-xs font-extrabold tracking-wider uppercase text-zinc-950 max-w-full truncate px-2">
                     {line1 || 'ORGANIZATION / EVENT NAME'}
                   </div>
 
                   {/* Text Line 2 */}
-                  <div className="text-sm font-black tracking-tight text-amber-950 max-w-full truncate px-2">
+                  <div className="text-xs font-black tracking-tight text-amber-950 max-w-full truncate px-2 mt-0.5">
                     {line2 || 'AWARD TITLE / WINNER'}
                   </div>
 
                   {/* Text Line 3 */}
-                  <div className="text-[11px] font-semibold text-slate-800 italic max-w-full truncate px-2">
+                  <div className="text-[10px] font-semibold text-zinc-700 italic max-w-full truncate px-2 mt-0.5">
                     {line3 || 'Recipient Name / Year'}
                   </div>
                 </div>
 
-                <p className="text-[11px] text-slate-400 text-center">
-                  *Rendered in high-contrast black laser etching on brushed gold plate.
+                <p className="text-[10px] text-zinc-400 text-center">
+                  *Rendered in crisp black laser engraving on brushed gold metal plaque.
                 </p>
               </div>
 
               {/* Showroom Specs */}
-              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-1.5 text-slate-600">
+              <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200/80 text-xs space-y-1 text-zinc-600">
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Material:</span>
-                  <span className="font-semibold text-slate-800">{product.material}</span>
+                  <span className="text-zinc-400">Material:</span>
+                  <span className="font-semibold text-zinc-800">{product.material}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Showroom Stock:</span>
-                  <span className="font-semibold text-emerald-600">Available at Lawspet</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Urgent Delivery:</span>
-                  <span className="font-semibold text-amber-600">Same-Day / 24h Turnaround</span>
+                  <span className="text-zinc-400">Showroom Stock:</span>
+                  <span className="font-semibold text-emerald-700">Available at Lawspet</span>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Customization Controls */}
-            <div className="lg:col-span-7 space-y-5">
+            <div className="lg:col-span-7 space-y-4">
               
               {/* Product Title & Base Price */}
               <div>
-                <h4 className="text-xl font-black text-slate-900 leading-tight">
+                <h4 className="text-lg font-extrabold text-zinc-900 leading-snug">
                   {product.name}
                 </h4>
-                <div className="flex items-center gap-3 mt-1">
-                  <span className="text-sm font-bold text-slate-500">
-                    Base: ₹{product.basePrice}
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm font-bold text-zinc-900">
+                    ₹{product.basePrice}
                   </span>
-                  <span className="text-xs text-slate-400 line-through">
+                  <span className="text-xs text-zinc-400 line-through">
                     MRP: ₹{product.mrp}
                   </span>
-                  <span className="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">
-                    Free Engraving
+                  <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200/60">
+                    Free Laser Plate
                   </span>
                 </div>
               </div>
@@ -316,19 +305,19 @@ export default function ProductCustomizerModal({
               {/* Height Selection */}
               {product.heightOptions && product.heightOptions.length > 0 && (
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 block">
+                  <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5 block">
                     1. Select Height / Size
                   </label>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {product.heightOptions.map((h) => (
                       <button
                         key={h}
                         type="button"
                         onClick={() => setSelectedHeight(h)}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                           selectedHeight === h
-                            ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                            ? 'bg-zinc-900 text-white shadow-xs'
+                            : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
                         }`}
                       >
                         {h}
@@ -339,31 +328,31 @@ export default function ProductCustomizerModal({
               )}
 
               {/* Custom Engraving Content */}
-              <div className="space-y-3 bg-slate-50/80 p-4 rounded-2xl border border-slate-200">
+              <div className="space-y-2.5 bg-zinc-50/80 p-3.5 rounded-2xl border border-zinc-200/80">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <label className="text-xs font-bold uppercase tracking-wider text-zinc-700">
                     2. Personalized Engraving Text
                   </label>
-                  <span className="text-[10px] text-amber-600 font-bold">
-                    Included Free
+                  <span className="text-[10px] text-amber-700 font-semibold">
+                    Free Included
                   </span>
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     Line 1: Organization / Event Name
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g., Pondicherry University Annual Meet 2026"
+                    placeholder="e.g., Pondicherry Sports Meet 2026"
                     value={line1}
                     onChange={(e) => setLine1(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-white border border-zinc-200 rounded-xl px-3 py-2 outline-none focus:border-zinc-400"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     Line 2: Award Title / Category
                   </label>
                   <input
@@ -371,33 +360,33 @@ export default function ProductCustomizerModal({
                     placeholder="e.g., Winner / Best Batsman / Star Performer"
                     value={line2}
                     onChange={(e) => setLine2(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-white border border-zinc-200 rounded-xl px-3 py-2 outline-none focus:border-zinc-400"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     Line 3: Recipient Name / Batch (Optional)
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g., SMVEC Titans / March 2026"
+                    placeholder="e.g., SMVEC XI / March 2026"
                     value={line3}
                     onChange={(e) => setLine3(e.target.value)}
-                    className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-white border border-zinc-200 rounded-xl px-3 py-2 outline-none focus:border-zinc-400"
                   />
                 </div>
 
                 {/* Logo Upload */}
-                <div className="pt-2 border-t border-slate-200/80">
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1.5">
+                <div className="pt-2 border-t border-zinc-200/70">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     School / Tournament Crest Logo (Optional)
                   </label>
                   
                   {logoPreview ? (
-                    <div className="flex items-center justify-between p-2.5 bg-white border border-emerald-300 rounded-xl text-xs text-emerald-800">
-                      <div className="flex items-center gap-2 truncate">
-                        <Check size={16} className="text-emerald-600 shrink-0" />
+                    <div className="flex items-center justify-between p-2 bg-white border border-emerald-300 rounded-xl text-xs text-emerald-800">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <Check size={14} className="text-emerald-600 shrink-0" />
                         <span className="truncate">{logoFileName || 'Logo Attached'}</span>
                       </div>
                       <button
@@ -406,11 +395,11 @@ export default function ProductCustomizerModal({
                         className="text-rose-500 hover:text-rose-700 p-1"
                         title="Remove Logo"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5">
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -421,13 +410,13 @@ export default function ProductCustomizerModal({
                       />
                       <label
                         htmlFor="logo-upload"
-                        className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition-colors shadow-sm"
+                        className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-xl text-xs font-medium text-zinc-700 transition-colors shadow-xs"
                       >
-                        <Upload size={14} className="text-amber-600" />
-                        <span>Upload Logo / Emblem</span>
+                        <Upload size={13} className="text-amber-600" />
+                        <span>Upload Logo</span>
                       </label>
-                      <span className="text-[11px] text-slate-400">
-                        PNG, JPG, or PDF proof
+                      <span className="text-[10px] text-zinc-400">
+                        PNG, JPG for engraving preview
                       </span>
                     </div>
                   )}
@@ -435,9 +424,9 @@ export default function ProductCustomizerModal({
               </div>
 
               {/* Customer Quick Identifiers */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     Institution / Team Name
                   </label>
                   <input
@@ -445,25 +434,25 @@ export default function ProductCustomizerModal({
                     placeholder="e.g. Pondicherry University"
                     value={organizationName}
                     onChange={(e) => setOrganizationName(e.target.value)}
-                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-xl px-2.5 py-1.5 outline-none focus:border-zinc-400"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     Contact Person Name
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Sports Secretary"
+                    placeholder="e.g. Sports Director"
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
-                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-xl px-2.5 py-1.5 outline-none focus:border-zinc-400"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     WhatsApp / Phone Number
                   </label>
                   <input
@@ -471,42 +460,42 @@ export default function ProductCustomizerModal({
                     placeholder="e.g. 98765 43210"
                     value={customerPhone}
                     onChange={(e) => setCustomerPhone(e.target.value)}
-                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-xl px-2.5 py-1.5 outline-none focus:border-zinc-400"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-slate-600 font-medium block mb-1">
+                  <label className="text-[10px] text-zinc-500 font-medium block mb-1">
                     Target Event Date
                   </label>
                   <input
                     type="date"
                     value={eventDate}
                     onChange={(e) => setEventDate(e.target.value)}
-                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-xl px-2.5 py-1.5 outline-none focus:border-zinc-400"
                   />
                 </div>
               </div>
 
               {/* Quantity & Tier Price Calculation */}
-              <div className="bg-amber-50/60 p-4 rounded-2xl border border-amber-200/80">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
+              <div className="bg-zinc-50 p-3.5 rounded-2xl border border-zinc-200/80">
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-zinc-800">
                     3. Quantity & Tier Pricing
                   </label>
                   {discountPercent > 0 && (
-                    <span className="text-[11px] font-black text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">
-                      {discountPercent}% Bulk Discount Applied!
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.2 rounded-full">
+                      {discountPercent}% Bulk Discount Applied
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <div className="flex items-center">
                     <button
                       type="button"
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="w-9 h-9 rounded-l-xl bg-white border border-slate-200 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center text-base"
+                      className="w-8 h-8 rounded-l-lg bg-white border border-zinc-200 font-bold text-zinc-700 hover:bg-zinc-100 flex items-center justify-center text-sm"
                     >
                       -
                     </button>
@@ -515,75 +504,69 @@ export default function ProductCustomizerModal({
                       min="1"
                       value={quantity}
                       onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                      className="w-16 h-9 text-center font-black text-sm bg-white border-y border-slate-200 outline-none"
+                      className="w-14 h-8 text-center font-bold text-xs bg-white border-y border-zinc-200 outline-none"
                     />
                     <button
                       type="button"
                       onClick={() => setQuantity(quantity + 1)}
-                      className="w-9 h-9 rounded-r-xl bg-white border border-slate-200 font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center text-base"
+                      className="w-8 h-8 rounded-r-lg bg-white border border-zinc-200 font-bold text-zinc-700 hover:bg-zinc-100 flex items-center justify-center text-sm"
                     >
                       +
                     </button>
                   </div>
 
                   <div className="text-right flex-1">
-                    <div className="text-[10px] uppercase font-bold text-slate-400">
+                    <div className="text-[9px] uppercase font-bold text-zinc-400">
                       Estimated Total
                     </div>
-                    <div className="text-2xl font-black text-slate-900 leading-none">
+                    <div className="text-xl font-extrabold text-zinc-900 leading-none">
                       ₹{totalPrice.toLocaleString('en-IN')}
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1">
-                      ₹{unitPrice} per piece {savings > 0 && `(Save ₹${savings.toLocaleString('en-IN')})`}
+                    <div className="text-[10px] text-zinc-500 mt-0.5">
+                      ₹{unitPrice}/pc {savings > 0 && `(Save ₹${savings.toLocaleString('en-IN')})`}
                     </div>
                   </div>
-                </div>
-
-                <div className="mt-2.5 pt-2 border-t border-amber-200/60 text-[11px] text-amber-900 flex justify-between font-medium">
-                  <span>10+ pcs: 10% OFF</span>
-                  <span>20+ pcs: 15% OFF</span>
-                  <span>50+ pcs: 25% OFF</span>
                 </div>
               </div>
 
               {/* Fulfillment Option */}
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 block">
+                <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5 block">
                   4. Fulfillment Model
                 </label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setFulfillment('pickup')}
-                    className={`p-3 rounded-2xl border text-left flex flex-col gap-1 transition-all ${
+                    className={`p-2.5 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
                       fulfillment === 'pickup'
-                        ? 'border-amber-500 bg-amber-50/60 text-amber-950 shadow-sm'
-                        : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                        ? 'border-zinc-900 bg-zinc-900 text-white shadow-xs'
+                        : 'border-zinc-200 hover:bg-zinc-50 text-zinc-700'
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold text-xs">
-                      <MapPin size={15} className="text-amber-600" />
+                      <MapPin size={13} className={fulfillment === 'pickup' ? 'text-amber-400' : 'text-zinc-600'} />
                       Showroom Pickup
                     </div>
-                    <span className="text-[11px] text-slate-500">
-                      Free pickup at Lawspet, Pondicherry
+                    <span className={`text-[10px] ${fulfillment === 'pickup' ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                      Free at Lawspet, Pondicherry
                     </span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setFulfillment('delivery')}
-                    className={`p-3 rounded-2xl border text-left flex flex-col gap-1 transition-all ${
+                    className={`p-2.5 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
                       fulfillment === 'delivery'
-                        ? 'border-amber-500 bg-amber-50/60 text-amber-950 shadow-sm'
-                        : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                        ? 'border-zinc-900 bg-zinc-900 text-white shadow-xs'
+                        : 'border-zinc-200 hover:bg-zinc-50 text-zinc-700'
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold text-xs">
-                      <Truck size={15} className="text-amber-600" />
+                      <Truck size={13} className={fulfillment === 'delivery' ? 'text-amber-400' : 'text-zinc-600'} />
                       Local Delivery
                     </div>
-                    <span className="text-[11px] text-slate-500">
+                    <span className={`text-[10px] ${fulfillment === 'delivery' ? 'text-zinc-300' : 'text-zinc-500'}`}>
                       Pondicherry, Cuddalore, Auroville
                     </span>
                   </button>
@@ -591,25 +574,25 @@ export default function ProductCustomizerModal({
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2.5 pt-2">
+              <div className="space-y-2 pt-1">
                 <button
                   type="button"
                   onClick={handleWhatsAppInquiry}
                   disabled={isSubmitting}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-6 rounded-2xl font-black flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/20 transition-all text-sm sm:text-base hover:scale-[1.01]"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-xs uppercase tracking-wider"
                 >
-                  <MessageSquare size={20} />
+                  <MessageSquare size={16} />
                   <span>Order & Request Proof on WhatsApp</span>
                 </button>
 
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={handleDirectQuote}
-                    className="py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                    className="py-2.5 px-3 bg-zinc-900 hover:bg-black text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <FileText size={16} className="text-amber-400" />
-                    <span>Download / Print Quote</span>
+                    <FileText size={14} className="text-amber-400" />
+                    <span>Printable Estimate</span>
                   </button>
 
                   <button
@@ -637,24 +620,24 @@ export default function ProductCustomizerModal({
                         onClose();
                       }
                     }}
-                    className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                    className="py-2.5 px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <Check size={16} className="text-emerald-600" />
-                    <span>Add to Multi-Item Quote</span>
+                    <Check size={14} className="text-emerald-600" />
+                    <span>Add to Quote</span>
                   </button>
                 </div>
               </div>
 
               {/* Trust badges */}
-              <div className="flex items-center justify-center gap-6 pt-3 border-t border-slate-100 text-slate-500 text-[11px]">
+              <div className="flex items-center justify-center gap-4 pt-2 border-t border-zinc-100 text-zinc-400 text-[10px]">
                 <span className="flex items-center gap-1">
-                  <ShieldCheck size={14} className="text-amber-500" /> Free Design Proof
+                  <ShieldCheck size={12} className="text-amber-600" /> Free Design Proof
                 </span>
                 <span className="flex items-center gap-1">
-                  <Clock size={14} className="text-amber-500" /> Urgent 24h Turnaround
+                  <Clock size={12} className="text-amber-600" /> 24h Turnaround
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin size={14} className="text-amber-500" /> Pondicherry Showroom
+                  <MapPin size={12} className="text-amber-600" /> Lawspet Showroom
                 </span>
               </div>
 

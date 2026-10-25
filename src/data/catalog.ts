@@ -1,17 +1,44 @@
 import { Category, Product } from '@/types';
 
 export const STORE_INFO = {
-  name: 'Trophy Mall Pondicherry',
+  name: 'Trophy Mall',
+  location: 'Pondicherry',
   tagline: "Pondicherry's Premier Showroom for Trophies, Awards, Medals & Laser Engraving",
   address: '76, 1st Floor, Lawspet, Airport Road, Rajaji Nagar, Puducherry - 605008',
   phone: process.env.NEXT_PUBLIC_STORE_PHONE || '+91 94432 12345',
   whatsapp: process.env.NEXT_PUBLIC_SHOP_WHATSAPP || '919443212345',
   mapsLink: process.env.NEXT_PUBLIC_STORE_MAPS_LINK || 'https://maps.app.goo.gl/Gfa6i4hKN1KhHZqt6',
   mapsShareLink: process.env.NEXT_PUBLIC_STORE_MAPS_SHARE_LINK || 'https://share.google/LPRtlWKV5kPvElf0C',
+  logoUrl: 'https://trophymall.shop/wp-content/uploads/2023/06/TROPHY-MALL-ONLY-LOGO-R-1-795x800.png',
   hours: 'Mon – Sat: 10:00 AM – 9:00 PM | Sun: Tournament Emergency Pickups',
   email: 'trophymallpondicherry@gmail.com',
   landmarks: 'Near Lawspet Airport Road Junction, Opp. Rajaji Nagar Main Arch, Pondicherry',
+  googleRating: '4.9',
+  reviewsCount: '250+',
 };
+
+export const SHOWROOM_GALLERY_IMAGES = [
+  {
+    url: 'https://trophymall.shop/wp-content/uploads/2026/08/Sports-Trophies-Cover-768x768.png',
+    caption: 'Sports Tournaments & Cricket Cups Collection',
+    category: 'Sports',
+  },
+  {
+    url: 'https://trophymall.shop/wp-content/uploads/2026/08/Big-Trophy-Cover.png',
+    caption: 'Championship Rolling Trophies (2ft - 5ft)',
+    category: 'Mega Cups',
+  },
+  {
+    url: 'https://trophymall.shop/wp-content/uploads/2026/10/Badge-of-Pride-800x800.jpeg',
+    caption: 'Custom Die-Cast School & Sports Medals',
+    category: 'Medals',
+  },
+  {
+    url: 'https://trophymall.shop/wp-content/uploads/2026/08/Plaques-Cover-800x800.png',
+    caption: 'Laser-Cut Acrylic & Wooden Executive Crests',
+    category: 'Corporate',
+  },
+];
 
 export const CATEGORIES: Category[] = [
   {
@@ -85,10 +112,10 @@ export const PRODUCTS: Product[] = [
     material: 'Metal & Fiber',
     heightInches: '14 inch',
     heightOptions: ['10 inch', '12 inch', '14 inch', '18 inch', '24 inch'],
-    description: 'Heavy gold-plated metal cup crowned with an embossed batsman figurine on a lustrous dark walnut wooden base. Includes complimentary high-definition laser-engraved brass plate.',
+    description: 'Heavy gold-plated metal cup crowned with an embossed batsman crest on a dark polished wooden pedestal. Includes complimentary high-definition laser-engraved brass plate.',
     images: [
-      'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2024/07/E1-23-800x800.webp',
+      'https://trophymall.shop/wp-content/uploads/2024/07/E1-21-800x800.webp',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -111,9 +138,10 @@ export const PRODUCTS: Product[] = [
     material: 'Metal',
     heightInches: '12 inch',
     heightOptions: ['10 inch', '12 inch', '15 inch'],
-    description: 'Dynamic chrome & gold duo-tone cricket player figure framed by an arch of victory stars. Tailor-made for local tournament match awards.',
+    description: 'Polished gold and chrome duo-tone cricket player figurine framed by an arch of victory stars. Ideal for local tournament match awards.',
     images: [
-      'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2024/07/A1-24-800x800.webp',
+      'https://trophymall.shop/wp-content/uploads/2024/07/A2-19-190x190.webp',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -137,7 +165,7 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['9 inch', '11 inch', '13 inch'],
     description: 'Detailed metal cricket ball shattering wickets sculptured on a sleek bevelled pedestal. Highly requested by Pondicherry district leagues.',
     images: [
-      'https://images.unsplash.com/photo-1531415074868-036b1c57e329?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2024/07/B1-18-800x800.webp',
     ],
     isCustomizable: true,
     isBestseller: false,
@@ -154,16 +182,16 @@ export const PRODUCTS: Product[] = [
     id: 'prod-sports-1',
     categoryId: 'cat-sports',
     categorySlug: 'sports',
-    name: 'Golden Boot Futsal & Football Trophy',
+    name: 'Golden Boot Football & Futsal Trophy',
     slug: 'golden-boot-football-trophy',
     basePrice: 550,
     mrp: 790,
     material: 'Resin',
     heightInches: '13 inch',
     heightOptions: ['10 inch', '13 inch', '16 inch'],
-    description: 'Solid electroplated metallic gold football cleat poised on an emerald turf accent with obsidian black pedestal. Essential for top scorers.',
+    description: 'Solid electroplated metallic gold football shoe poised on an emerald turf accent with obsidian black pedestal. Essential for top scorers.',
     images: [
-      'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2024/07/E2-16-768x768.webp',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -187,7 +215,7 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['10 inch', '12 inch', '15 inch'],
     description: 'Polished silver and brass shuttlecock in sweeping flight frame. Perfect for school, college, and club badminton tournaments.',
     images: [
-      'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/08/Sports-Trophies-Cover-768x768.png',
     ],
     isCustomizable: true,
     isBestseller: false,
@@ -211,7 +239,7 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['9 inch', '11 inch', '14 inch'],
     description: 'Dynamic sprinting athlete metal figurine with ribbon laurel wreath. Ideal for track & field meets and beach marathon runs.',
     images: [
-      'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/09/Speed-Racing-Endurance-Sports.png',
     ],
     isCustomizable: true,
     isBestseller: false,
@@ -237,7 +265,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['7 inch', '9 inch', '11 inch'],
     description: '12mm ultra-clear optical cast acrylic with diamond-polished edges. Supports custom corporate color logo printing and frosted laser engraving.',
     images: [
-      'https://images.unsplash.com/photo-1569420061962-d2279148b534?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2025/01/D2-6-800x800.webp',
+      'https://trophymall.shop/wp-content/uploads/2025/01/D1-6.webp',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -262,7 +291,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['8 inch', '10 inch', '12 inch'],
     description: 'K9 optical grade heavy crystal pillar topped with a 3D faceted star. Deluxe velvet presentation gift box included.',
     images: [
-      'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/09/Crystal-Prestige-Icon.png',
+      'https://trophymall.shop/wp-content/uploads/2026/09/Premium-Honours-Icon-1-768x768.png',
     ],
     isCustomizable: true,
     isBestseller: false,
@@ -288,7 +318,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['2.0 inch', '2.5 inch', '3.0 inch'],
     description: 'High-density zinc alloy die-cast medals with 3D embossed border and custom center decal for school/college crest. Includes soft satin tri-color neck lanyard.',
     images: [
-      'https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/10/Badge-of-Pride-800x800.jpeg',
+      'https://trophymall.shop/wp-content/uploads/2026/08/Medals-Cover-150x150.jpeg',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -313,7 +344,7 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['2.5 inch', '2.75 inch', '3.25 inch'],
     description: 'Antique brushed finish with laurel wreath design and prominent star motif. Comes ready with customized rear sticker or laser text.',
     images: [
-      'https://images.unsplash.com/photo-1569517282132-25d22f4573e6?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/09/Badges-of-Pride-Icon-768x768.png',
     ],
     isCustomizable: true,
     isBestseller: false,
@@ -339,7 +370,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['2 Feet', '2.5 Feet', '3 Feet', '4 Feet', '5 Feet'],
     description: 'Monumental tournament trophy featuring dual ornate cast brass handles, mirror-finish gold urn, and a multi-level polished mahogany tower with past winners plate space.',
     images: [
-      'https://images.unsplash.com/photo-1589487391730-58f20eb2c308?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/08/Big-Trophy-Cover.png',
+      'https://trophymall.shop/wp-content/uploads/2024/07/H2-11-768x768.webp',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -363,7 +395,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['2 Feet', '2.5 Feet', '3 Feet'],
     description: 'Traditional Victorian-inspired cup with high polished chrome bowl and gold filigree handles. Designed for University convocation and Premier state tournaments.',
     images: [
-      'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2024/07/J1-13-700x700.webp',
+      'https://trophymall.shop/wp-content/uploads/2024/07/J2-12-768x768.webp',
     ],
     isCustomizable: true,
     isBestseller: false,
@@ -389,7 +422,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['6x8 inch', '8x10 inch', '10x12 inch'],
     description: 'Rich dark walnut finish beveled wooden plaque with engraved brushed metallic gold plate and official Pondicherry emblems. The #1 choice for Chief Guests and visiting dignitaries.',
     images: [
-      'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/08/Plaques-Cover-800x800.png',
+      'https://trophymall.shop/wp-content/uploads/2024/07/F2-17-800x800.webp',
     ],
     isCustomizable: true,
     isBestseller: true,
@@ -414,7 +448,8 @@ export const PRODUCTS: Product[] = [
     heightOptions: ['8 inch', '9 inch', '11 inch'],
     description: 'Contemporary architectural hybrid of solid natural teak timber and beveled optical glass plate. Highly sought-after by SMVEC, JIPMER, and corporate conferences.',
     images: [
-      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+      'https://trophymall.shop/wp-content/uploads/2026/10/Customized-Trophies-800x800.png',
+      'https://trophymall.shop/wp-content/uploads/2025/01/F1-8-700x700.webp',
     ],
     isCustomizable: true,
     isBestseller: false,
