@@ -1,15 +1,20 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   Search, 
   Trophy, 
-  RotateCcw,
-  Layers,
-  ArrowUpDown
+  RotateCcw, 
+  Layers, 
+  ArrowUpDown,
+  MessageSquare,
+  ExternalLink,
+  ShieldAlert
 } from 'lucide-react';
 import { Product } from '@/types';
-import { PRODUCTS, CATEGORIES } from '@/data/catalog';
+import { CATEGORIES, STORE_INFO } from '@/data/catalog';
+import { getStoredProducts } from '@/lib/catalogStore';
 import CategoryTabs from './CategoryTabs';
 import ProductCard from './ProductCard';
 
@@ -18,27 +23,40 @@ interface ProductCatalogProps {
 }
 
 export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
+  const [catalogProducts, setCatalogProducts] = useState<Product[]>([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc'>('featured');
 
+  // Load products dynamically on mount and listen to updates
+  useEffect(() => {
+    setCatalogProducts(getStoredProducts());
+
+    const handleCatalogUpdate = () => {
+      setCatalogProducts(getStoredProducts());
+    };
+
+    window.addEventListener('catalog-updated', handleCatalogUpdate);
+    return () => window.removeEventListener('catalog-updated', handleCatalogUpdate);
+  }, []);
+
   // Product counts per category
   const productCounts = useMemo(() => {
     const counts: Record<string, number> = {
-      all: PRODUCTS.length,
+      all: catalogProducts.length,
     };
     CATEGORIES.forEach((cat) => {
       if (cat.slug !== 'all') {
-        counts[cat.slug] = PRODUCTS.filter((p) => p.categorySlug === cat.slug).length;
+        counts[cat.slug] = catalogProducts.filter((p) => p.categorySlug === cat.slug).length;
       }
     });
     return counts;
-  }, []);
+  }, [catalogProducts]);
 
   // Filtered and sorted products
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return catalogProducts.filter((product) => {
       // Category filter
       if (activeCategory !== 'all' && product.categorySlug !== activeCategory) {
         return false;
@@ -70,7 +88,7 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
       if (!a.isBestseller && b.isBestseller) return 1;
       return 0;
     });
-  }, [activeCategory, selectedMaterial, searchQuery, sortBy]);
+  }, [catalogProducts, activeCategory, selectedMaterial, searchQuery, sortBy]);
 
   const handleResetFilters = () => {
     setActiveCategory('all');
@@ -94,12 +112,25 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
               Trophy & Awards Catalog
             </h2>
             <p className="text-xs text-zinc-500 mt-1">
-              Select any design to view customization options, free laser plate proofs, or bulk tier pricing.
+              Select any design to customize heights, review laser plate proofs, or view bulk tier discounts.
             </p>
           </div>
 
-          <div className="text-xs text-zinc-500">
-            Showing <strong className="text-zinc-900 font-semibold">{filteredProducts.length}</strong> items in showroom
+          <div className="flex items-center gap-3">
+            <a
+              href={`https://wa.me/c/${STORE_INFO.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-200 transition-colors"
+            >
+              <MessageSquare size={13} className="text-emerald-600" />
+              <span>Browse in WhatsApp</span>
+              <ExternalLink size={10} />
+            </a>
+
+            <div className="text-xs text-zinc-500 hidden sm:block">
+              <strong className="text-zinc-900 font-semibold">{filteredProducts.length}</strong> items in catalog
+            </div>
           </div>
         </div>
 
@@ -112,7 +143,7 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
           />
         </div>
 
-        {/* Search, Material Filter & Sort Bar - Minimalist */}
+        {/* Search, Material Filter & Sort Bar */}
         <div className="bg-white p-3 rounded-2xl border border-zinc-200/80 shadow-xs mb-7 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           
           {/* Search Field */}
@@ -219,6 +250,17 @@ export default function ProductCatalog({ onCustomize }: ProductCatalogProps) {
             </div>
           </div>
         )}
+
+        {/* Subtle Admin Link for Shop Owner at bottom of catalog */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-1.5 text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors"
+          >
+            <ShieldAlert size={12} />
+            <span>Showroom Owner? Login to sync WhatsApp Catalog</span>
+          </Link>
+        </div>
 
       </div>
     </section>
